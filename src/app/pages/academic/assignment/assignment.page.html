@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+  <ng-container *ngIf="loginuser?.usertypeID != 3">
+  <ion-toolbar color="light" *ngIf="classes">
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.assignment_classes}}</ion-label>
+          <ion-select placeholder="{{language?.assignment_select_classes}}" #select [(ngModel)]="selectedClass" (ionChange)="selectedClasses()">
+            <ion-select-option  *ngFor="let class of classes" value="{{class.classesID}}">{{class.classes}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  </ng-container>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,classID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="assignments">
+    <ion-card class="card-bg" *ngFor="let assignment of assignments">
+      <div class="card-class">
+        <ion-row>
+          <ion-col size="5"><h3 class="text-color-h">{{assignment.title}}</h3></ion-col>
+          <ion-col size="7">
+            <ion-button color="warning" *ngIf="assignment.file" class="button-download" (click)="fileDownload(assignment.file,assignment.originalfile)"><ion-icon  name="cloud-download"></ion-icon></ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar class="avatar-img">
+            <img src="assets/subject.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.assignment_description}}</h4>
+            <ion-text color="secondary">
+              <p>{{assignment.description}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar class="avatar-img">
+            <img src="assets/routine.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.assignment_deadlinedate}}</h4>
+            <ion-text color="secondary">
+              <p>{{assignment.deadlinedate | date: "dd MMM yyyy"}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

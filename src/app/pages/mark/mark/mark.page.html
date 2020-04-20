@@ -1,0 +1,152 @@
+
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+  <ng-container *ngIf="loginuser?.usertypeID != 3">
+  <ion-toolbar color="light" *ngIf="classes">
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.mark_classes}}</ion-label>
+          <ion-select placeholder="{{language?.mark_select_classes}}" #select [(ngModel)]="selectedClass" (ionChange)="selectedClasses()">
+            <ion-select-option  *ngFor="let class of classes" value="{{class.classesID}}">{{class.classes}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  </ng-container>
+</ion-header>
+<ion-content  class="bg-image no-scroll"  *ngIf="!myProfile">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event ,true, classID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="isLoaded">
+    <ng-container *ngIf="students?.length > 0">
+      <ion-card  class="card-student-css" *ngFor="let student of students"  routerLink="/markview/{{student.srstudentID}}/{{student.srclassesID}}">
+        <div style="margin: 8px;">
+          <ion-row>
+            <ion-col size="4">
+              <img class="student-img" src="{{siteUrl}}uploads/images/{{student.photo}}">
+            </ion-col>
+            <ion-col size="8">
+              <div class="text-div">
+                <h3 class="text-h">{{student.name}}</h3>
+                <p class="text-p">{{language?.mark_roll}}: {{student.roll}}</p>
+                <p class="text-p">{{language?.mark_classes}}: {{student.srclasses}} ({{student.srsection}})</p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-item class="ion-item-css" >
+            <ion-avatar class="avatar-img">
+              <img src="assets/boy.png" />
+            </ion-avatar>
+            <ion-label>
+              <h4 class="ion-text-h">{{language?.mark_username}}</h4>
+              <ion-text color="secondary">
+                <p class="ion-text-p">{{student.username}}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item class="ion-item-css" >
+            <ion-avatar class="avatar-img">
+              <img src="assets/sms.png" />
+            </ion-avatar>
+            <ion-label>
+              <h4 class="ion-text-h">{{language?.mark_phone}}</h4>
+              <ion-text color="secondary">
+                <p class="ion-text-p">{{student.phone}}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-card>
+    </ng-container>
+  </div>
+</ion-content>
+<ion-content  *ngIf="myProfile"  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefreshProfile($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="imgcard" align="center" *ngIf="studentprofile">
+    <img  color="secondary" *ngIf="studentprofile" src="{{siteUrl}}uploads/images/{{studentprofile?.photo}}" class="img2" align="center">
+  </div>
+  <ng-container  *ngIf="marksettings">
+    <ion-card class="card-bg" *ngFor="let markE of objectKeys(marksettings)">
+      <ion-card-header class="card-header">
+        <span style="font-weight: bold">{{exams[markE]}}</span>
+      </ion-card-header>
+      <div style="overflow-x:scroll;">
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th class="text-center" rowspan="2" style="background-color:#1D223a;color:#fff;">{{language?.mark_subject}}</th>
+            <th colspan="2" class=" text-center" style="background-color:#1D223a;color:#fff;" *ngFor="let markpercentage of marksettings[markE]?.markpercentageKey">{{markpercentages[markpercentage]?.markpercentagetype}}</th>
+            <th colspan="3" class="text-center " style="background-color:#1D223a;color:#fff;">{{language?.mark_total}}</th>
+          </tr>
+          <tr>
+            <ng-container *ngFor="let markpercentage of marksettings[markE]?.markpercentageKey">
+              <th class="bg-sky text-center ">{{language?.mark_obtained_mark}}</th>
+              <th class="bg-sky-light text-center" data-title="Highest Mark">{{language?.mark_highest_mark}}</th>
+            </ng-container>
+            <th class="bg-sky-total text-center" style="background-color: #6a94c1">{{language?.mark_mark}}</th>
+            <th class="bg-purple-shipu text-center" data-title="Point" style="background-color: #5eb171">{{language?.mark_point}}</th>
+            <th class="bg-sky-total-grade text-center" data-title="Grade" style="background-color: #5fbfce">{{language?.mark_grade}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let subjectkey of marksettings[markE].subjectKeys">
+            <td class="text-black" data-title="Subject">{{subjects[subjectkey].subject}}</td>
+            <ng-container *ngFor="let markpercentage of marksettings[markE].markpercentageKey">
+              <ng-container *ngIf="marksettings[markE][subjectkey]['own'][markpercentage] == markpercentage;else other_content">
+                <ng-container *ngIf="marks[markE][subjectkey];else mark_content">
+                  <td class="text-black" data-title="Mark" >{{marks[markE][subjectkey][markpercentage]}}</td>
+                </ng-container>
+                <ng-template #mark_content>
+                  <td class="text-black" data-title="Mark" >N/A</td>
+                </ng-template>
+                <td class="text-black" data-title="Highest Mark">{{highestmarks[markE][subjectkey][markpercentage]}}</td>
+              </ng-container>
+
+              <ng-template #other_content>
+                <td class="text-black" data-title="Mark"></td>
+                <td class="text-black" data-title="Highest Mark"></td>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngIf="marksettings[markE][subjectkey].totalSumMark && marksettings[markE][subjectkey].gradepoint && marksettings[markE][subjectkey].grade;else tgg_mark">
+              <td class="text-black" data-title="Mark">{{marksettings[markE][subjectkey].totalSumMark}}</td>
+              <td class="text-black" data-title="Point">{{marksettings[markE][subjectkey].gradepoint}}</td>
+              <td class="text-black" data-title="Grade">{{marksettings[markE][subjectkey].grade}}</td>
+            </ng-container>
+            <ng-template #tgg_mark>
+              <td class="text-black" data-title="Mark">{{totalSumpoint}}</td>
+              <td class="text-black" data-title="Point">{{totalSumpoint.toFixed(2)}}</td>
+              <ng-container *ngFor="let gread of grades">
+                <td class="text-black" data-title="Grade" *ngIf="gread.gradefrom == 0">{{gread.grade}}</td>
+              </ng-container>
+            </ng-template>
+
+          </tr>
+          </tbody>
+        </table>
+        <div class="box-footer" style="padding-left:0px;">
+          <p class="text-black" style="margin-top: 17px; width: max-content;">&nbsp;&nbsp;{{language?.mark_total_marks}} : <span class="text-red text-bold">{{marksettings[markE].totalSubjectMarks}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{language?.mark_total_obtained_marks}} : <span class="text-red text-bold">{{marksettings[markE].totalExamMarks}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{language?.mark_total_average_marks}} : <span class="text-red text-bold">{{marksettings[markE].totalAverageMarks}} </span> <br> &nbsp;&nbsp;{{language?.mark_total_average_marks_percetage}} : <span class="text-red text-bold">{{marksettings[markE].greadAverageMarks}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{language?.mark_gpa}} : <span class="text-red text-bold">{{marksettings[markE].totalAveragegpa}}</span>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        </div>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

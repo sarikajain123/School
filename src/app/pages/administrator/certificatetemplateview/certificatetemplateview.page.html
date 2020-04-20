@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,certificate_templateID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="certificatetemplate">
+    <ion-card class="card-bg">
+      <div class="card-class">
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/diploma.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{certificatetemplate?.top_heading_title}}</h4>
+            <ion-text>
+              <p>{{certificatetemplate?.name}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-card-content>
+          <span>{{certificatetemplate?.template}}</span>
+        </ion-card-content>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,52 @@
+
+.card-bg{
+  --background: #ffff !important;
+  margin-top: 10px;
+  border-radius: 15px;
+
+}
+
+
+.card-header{
+  --background:#989aa2;
+  color: black;
+}
+
+.p-text p {
+  font-size: 13px;
+  color: #ffffff;
+}
+.p-text h4 {
+  font-size: 16px;
+  color: #ffffff;
+
+}
+
+.card-class {
+  margin: 8px;
+}
+.card-class .text-color-h{
+  text-align: start;
+  font-size: 17px;
+  color: #000000;
+}
+.card-class .text-color-p {
+  text-align: start;
+  color: #000000;
+  font-size: 13px;
+  line-height: 0px;
+}
+
+.ion-item-css {
+  --ion-background-color:#adadaffc !important;
+}
+
+.boy-img {
+  width:80%;
+  border-radius: 50%;
+  margin: auto;
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: 0px 0px 142px -37px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 142px -37px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 142px -37px rgba(0, 0, 0, 0.75);
+}

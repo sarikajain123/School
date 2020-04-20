@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefreshProfile($event,true,teacherID)" *ngIf="isRefresh">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Pull to refresh"
+                refreshingSpinner="circles"
+                refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <div class="imgcard" align="center" *ngIf="teacherprofile">
+        <img  color="secondary" *ngIf="teacherprofile" src="{{siteUrl}}uploads/images/{{teacherprofile?.photo}}" class="img2" align="center">
+    </div>
+    <ng-container  *ngIf="teacherprofile">
+            <ion-card  class="card-bg">
+                <ion-card-header class="card-header1">
+                    <span style="font-weight: bold;">{{language?.tattendance_attendance}}</span>
+                </ion-card-header>
+                <div style="overflow-x:scroll;">
+                    <table cellpadding="2" cellspacing="2" class="attendance_table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let value of attendancesMonth;">
+                            <td >{{value.monthname}}</td>
+                            <td class="{{attendances[value.monthkey]['1']}}-color">{{attendances[value.monthkey]['1']}}</td>
+                            <td class="{{attendances[value.monthkey]['2']}}-color">{{attendances[value.monthkey]['2']}}</td>
+                            <td class="{{attendances[value.monthkey]['3']}}-color">{{attendances[value.monthkey]['3']}}</td>
+                            <td class="{{attendances[value.monthkey]['4']}}-color">{{attendances[value.monthkey]['4']}}</td>
+                            <td class="{{attendances[value.monthkey]['5']}}-color">{{attendances[value.monthkey]['5']}}</td>
+                            <td class="{{attendances[value.monthkey]['6']}}-color">{{attendances[value.monthkey]['6']}}</td>
+                            <td class="{{attendances[value.monthkey]['7']}}-color">{{attendances[value.monthkey]['7']}}</td>
+                            <td class="{{attendances[value.monthkey]['8']}}-color">{{attendances[value.monthkey]['8']}}</td>
+                            <td class="{{attendances[value.monthkey]['9']}}-color">{{attendances[value.monthkey]['9']}}</td>
+                            <td class="{{attendances[value.monthkey]['10']}}-color">{{attendances[value.monthkey]['10']}}</td>
+                            <td class="{{attendances[value.monthkey]['11']}}-color">{{attendances[value.monthkey]['11']}}</td>
+                            <td class="{{attendances[value.monthkey]['12']}}-color">{{attendances[value.monthkey]['12']}}</td>
+                            <td class="{{attendances[value.monthkey]['13']}}-color">{{attendances[value.monthkey]['13']}}</td>
+                            <td class="{{attendances[value.monthkey]['14']}}-color">{{attendances[value.monthkey]['14']}}</td>
+                            <td class="{{attendances[value.monthkey]['15']}}-color">{{attendances[value.monthkey]['15']}}</td>
+                            <td class="{{attendances[value.monthkey]['16']}}-color">{{attendances[value.monthkey]['16']}}</td>
+                            <td class="{{attendances[value.monthkey]['17']}}-color">{{attendances[value.monthkey]['17']}}</td>
+                            <td class="{{attendances[value.monthkey]['18']}}-color">{{attendances[value.monthkey]['18']}}</td>
+                            <td class="{{attendances[value.monthkey]['19']}}-color">{{attendances[value.monthkey]['19']}}</td>
+                            <td class="{{attendances[value.monthkey]['20']}}-color">{{attendances[value.monthkey]['20']}}</td>
+                            <td class="{{attendances[value.monthkey]['21']}}-color">{{attendances[value.monthkey]['21']}}</td>
+                            <td class="{{attendances[value.monthkey]['22']}}-color">{{attendances[value.monthkey]['22']}}</td>
+                            <td class="{{attendances[value.monthkey]['23']}}-color">{{attendances[value.monthkey]['23']}}</td>
+                            <td class="{{attendances[value.monthkey]['24']}}-color">{{attendances[value.monthkey]['24']}}</td>
+                            <td class="{{attendances[value.monthkey]['25']}}-color">{{attendances[value.monthkey]['25']}}</td>
+                            <td class="{{attendances[value.monthkey]['26']}}-color">{{attendances[value.monthkey]['26']}}</td>
+                            <td class="{{attendances[value.monthkey]['27']}}-color">{{attendances[value.monthkey]['27']}}</td>
+                            <td class="{{attendances[value.monthkey]['28']}}-color">{{attendances[value.monthkey]['28']}}</td>
+                            <td class="{{attendances[value.monthkey]['29']}}-color">{{attendances[value.monthkey]['29']}}</td>
+                            <td class="{{attendances[value.monthkey]['30']}}-color">{{attendances[value.monthkey]['30']}}</td>
+                            <td class="{{attendances[value.monthkey]['31']}}-color">{{attendances[value.monthkey]['31']}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div align="center">
+                        <p>{{language?.tattendance_total_holiday}}: {{totalcount?.totalholiday}}, {{language?.tattendance_total_weekenday}}: {{totalcount?.totalweekend}}, {{language?.tattendance_total_present}}: {{totalcount?.totalpresent}}, {{language?.tattendance_total_absent}}: {{totalcount?.totalabsent}}, {{language?.tattendance_total_late}}: {{totalcount?.totallate}}, {{language?.tattendance_total_leaveday}}: {{totalcount?.totalleave}}</p>
+                    </div>
+                </div>
+            </ion-card>
+    </ng-container>
+</ion-content>
+

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="transports">
+    <ion-card class="card-bg"  *ngFor="let transport of transports">
+      <div class="card-class">
+        <ion-row>
+          <ion-col size="4">
+            <img class="subject-img" src="assets/school-bus.png">
+          </ion-col>
+          <ion-col size="8">
+            <div class="text-div">
+              <h4 class="text-color-h">{{transport.route}}</h4>
+              <p class="text-color-p">{{language?.transport_vehicle}} - {{transport.vehicle}}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/salary.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.transport_fare}}</h4>
+            <ion-text>
+              <p>{{transport.fare}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

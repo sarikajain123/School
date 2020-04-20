@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,iBAAiB;EACf,YAAY,EAAE,OAAO;EACrB,KAAK,EAAE,KAAK",
+"sources": ["teacher.page.scss"],
+"names": [],
+"file": "teacher.page.css"
+}

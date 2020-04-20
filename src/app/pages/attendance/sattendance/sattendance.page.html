@@ -1,0 +1,213 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons *ngIf="permission?.sattendance_add == 'yes'" slot="end" routerLink="/sattendanceadd">
+        {{language?.menu_add}}
+      <ion-icon name="add" slot="start"></ion-icon>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+  <ng-container *ngIf="loginuser?.usertypeID != 3">
+  <ion-toolbar color="light" *ngIf="classes">
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.attendance_classes}}</ion-label>
+          <ion-select placeholder="{{language?.attendance_select_classes}}" #select [(ngModel)]="selectedClass" (ionChange)="selectedClasses()">
+            <ion-select-option  *ngFor="let class of classes" value="{{class.classesID}}">{{class.classes}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  </ng-container>
+</ion-header>
+
+<ion-content  class="bg-image no-scroll"  *ngIf="!myProfile">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event ,true, classID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="isLoaded">
+    <ng-container *ngIf="students?.length > 0">
+      <ion-card  class="card-student-css" *ngFor="let student of students" routerLink="/sattendanceview/{{student.studentID}}/{{student.classesID}}">
+        <div style="margin: 8px;" >
+          <ion-row>
+            <ion-col size="4">
+              <img class="student-img" src="{{siteUrl}}uploads/images/{{student.photo}}">
+            </ion-col>
+            <ion-col size="8">
+              <div class="text-div">
+                <h3 class="text-h">{{student.name}}</h3>
+                <p class="text-p">{{language?.attendance_roll}}: {{student.roll}}</p>
+                <p class="text-p">{{language?.attendance_classes}}: {{student.srclasses}} ({{student.srsection}})</p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-item class="ion-item-css" >
+            <ion-avatar class="avatar-img">
+              <img src="assets/boy.png" />
+            </ion-avatar>
+            <ion-label>
+              <h4 class="ion-text-h">{{language?.attendance_username}}</h4>
+              <ion-text color="secondary">
+                <p class="ion-text-p">{{student.username}}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item class="ion-item-css" >
+            <ion-avatar class="avatar-img">
+              <img src="assets/sms.png" />
+            </ion-avatar>
+            <ion-label>
+              <h4 class="ion-text-h">{{language?.attendance_phone}}</h4>
+              <ion-text color="secondary">
+                <p class="ion-text-p">{{student.phone}}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-card>
+    </ng-container>
+  </div>
+</ion-content>
+
+<ion-content  *ngIf="myProfile"  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefreshProfile($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="imgcard" align="center" *ngIf="studentprofile">
+    <img  color="secondary" *ngIf="studentprofile" src="{{siteUrl}}uploads/images/{{studentprofile?.photo}}" class="img2" align="center">
+  </div>
+  <ng-container  *ngIf="attendanceType == 'subject'">
+      <ion-card *ngFor="let subject of subjects; let i = index" class="card-bg">
+        <ng-container *ngIf="i == 0">
+          <ion-card-header class="card-header1">
+            <span style="font-weight: bold;"> {{subject.subject}} {{language?.sattendance_attendance}}</span>
+          </ion-card-header>
+        </ng-container>
+        <ng-container *ngIf="i !=0">
+          <ion-card-header class="card-header">
+            <span style="font-weight: bold;"> {{subject.subject}} {{language?.sattendance_attendance}}</span>
+          </ion-card-header>
+        </ng-container>
+
+        <div style="overflow-x:scroll;">
+          <table cellpadding="2" cellspacing="2" class="attendance_table">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let value of attendancesMonth;">
+              <td >{{value.monthname}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['1']}}-color">{{attendances[subject.subjectID][value.monthkey]['1']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['2']}}-color">{{attendances[subject.subjectID][value.monthkey]['2']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['3']}}-color">{{attendances[subject.subjectID][value.monthkey]['3']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['4']}}-color">{{attendances[subject.subjectID][value.monthkey]['4']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['5']}}-color">{{attendances[subject.subjectID][value.monthkey]['5']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['6']}}-color">{{attendances[subject.subjectID][value.monthkey]['6']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['7']}}-color">{{attendances[subject.subjectID][value.monthkey]['7']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['8']}}-color">{{attendances[subject.subjectID][value.monthkey]['8']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['9']}}-color">{{attendances[subject.subjectID][value.monthkey]['9']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['10']}}-color">{{attendances[subject.subjectID][value.monthkey]['10']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['11']}}-color">{{attendances[subject.subjectID][value.monthkey]['11']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['12']}}-color">{{attendances[subject.subjectID][value.monthkey]['12']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['13']}}-color">{{attendances[subject.subjectID][value.monthkey]['13']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['14']}}-color">{{attendances[subject.subjectID][value.monthkey]['14']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['15']}}-color">{{attendances[subject.subjectID][value.monthkey]['15']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['16']}}-color">{{attendances[subject.subjectID][value.monthkey]['16']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['17']}}-color">{{attendances[subject.subjectID][value.monthkey]['17']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['18']}}-color">{{attendances[subject.subjectID][value.monthkey]['18']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['19']}}-color">{{attendances[subject.subjectID][value.monthkey]['19']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['20']}}-color">{{attendances[subject.subjectID][value.monthkey]['20']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['21']}}-color">{{attendances[subject.subjectID][value.monthkey]['21']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['22']}}-color">{{attendances[subject.subjectID][value.monthkey]['22']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['23']}}-color">{{attendances[subject.subjectID][value.monthkey]['23']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['24']}}-color">{{attendances[subject.subjectID][value.monthkey]['24']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['25']}}-color">{{attendances[subject.subjectID][value.monthkey]['25']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['26']}}-color">{{attendances[subject.subjectID][value.monthkey]['26']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['27']}}-color">{{attendances[subject.subjectID][value.monthkey]['27']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['28']}}-color">{{attendances[subject.subjectID][value.monthkey]['28']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['29']}}-color">{{attendances[subject.subjectID][value.monthkey]['29']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['30']}}-color">{{attendances[subject.subjectID][value.monthkey]['30']}}</td>
+              <td class="{{attendances[subject.subjectID][value.monthkey]['31']}}-color">{{attendances[subject.subjectID][value.monthkey]['31']}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div align="center">
+            <p>{{language?.sattendance_total_holiday}}: {{totalcount[subject.subjectID].totalholiday}}, {{language?.sattendance_total_weekenday}}: {{totalcount[subject.subjectID].totalweekend}}, {{language?.sattendance_total_present}}: {{totalcount[subject.subjectID].totalpresent}}, {{language?.sattendance_total_absent}}: {{totalcount[subject.subjectID].totalabsent}}, {{language?.sattendance_total_late}}: {{totalcount[subject.subjectID].totallate}}, {{language?.sattendance_total_leaveday}}: {{totalcount[subject.subjectID].totalleave}}</p>
+          </div>
+        </div>
+      </ion-card>
+  </ng-container>
+  <ng-container  *ngIf="attendanceType == 'day'">
+      <ion-card class="card-bg">
+        <ion-card-header class="card-header1">
+          <span style="font-weight: bold;">{{language?.sattendance_day}} {{language?.sattendance_attendance}}</span>
+        </ion-card-header>
+        <div style="overflow-x:scroll;">
+          <table cellpadding="2" cellspacing="2" class="attendance_table">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let value of attendancesMonth;">
+              <td >{{value.monthname}}</td>
+              <td class="{{attendances[value.monthkey]['1']}}-color">{{attendances[value.monthkey]['1']}}</td>
+              <td class="{{attendances[value.monthkey]['2']}}-color">{{attendances[value.monthkey]['2']}}</td>
+              <td class="{{attendances[value.monthkey]['3']}}-color">{{attendances[value.monthkey]['3']}}</td>
+              <td class="{{attendances[value.monthkey]['4']}}-color">{{attendances[value.monthkey]['4']}}</td>
+              <td class="{{attendances[value.monthkey]['5']}}-color">{{attendances[value.monthkey]['5']}}</td>
+              <td class="{{attendances[value.monthkey]['6']}}-color">{{attendances[value.monthkey]['6']}}</td>
+              <td class="{{attendances[value.monthkey]['7']}}-color">{{attendances[value.monthkey]['7']}}</td>
+              <td class="{{attendances[value.monthkey]['8']}}-color">{{attendances[value.monthkey]['8']}}</td>
+              <td class="{{attendances[value.monthkey]['9']}}-color">{{attendances[value.monthkey]['9']}}</td>
+              <td class="{{attendances[value.monthkey]['10']}}-color">{{attendances[value.monthkey]['10']}}</td>
+              <td class="{{attendances[value.monthkey]['11']}}-color">{{attendances[value.monthkey]['11']}}</td>
+              <td class="{{attendances[value.monthkey]['12']}}-color">{{attendances[value.monthkey]['12']}}</td>
+              <td class="{{attendances[value.monthkey]['13']}}-color">{{attendances[value.monthkey]['13']}}</td>
+              <td class="{{attendances[value.monthkey]['14']}}-color">{{attendances[value.monthkey]['14']}}</td>
+              <td class="{{attendances[value.monthkey]['15']}}-color">{{attendances[value.monthkey]['15']}}</td>
+              <td class="{{attendances[value.monthkey]['16']}}-color">{{attendances[value.monthkey]['16']}}</td>
+              <td class="{{attendances[value.monthkey]['17']}}-color">{{attendances[value.monthkey]['17']}}</td>
+              <td class="{{attendances[value.monthkey]['18']}}-color">{{attendances[value.monthkey]['18']}}</td>
+              <td class="{{attendances[value.monthkey]['19']}}-color">{{attendances[value.monthkey]['19']}}</td>
+              <td class="{{attendances[value.monthkey]['20']}}-color">{{attendances[value.monthkey]['20']}}</td>
+              <td class="{{attendances[value.monthkey]['21']}}-color">{{attendances[value.monthkey]['21']}}</td>
+              <td class="{{attendances[value.monthkey]['22']}}-color">{{attendances[value.monthkey]['22']}}</td>
+              <td class="{{attendances[value.monthkey]['23']}}-color">{{attendances[value.monthkey]['23']}}</td>
+              <td class="{{attendances[value.monthkey]['24']}}-color">{{attendances[value.monthkey]['24']}}</td>
+              <td class="{{attendances[value.monthkey]['25']}}-color">{{attendances[value.monthkey]['25']}}</td>
+              <td class="{{attendances[value.monthkey]['26']}}-color">{{attendances[value.monthkey]['26']}}</td>
+              <td class="{{attendances[value.monthkey]['27']}}-color">{{attendances[value.monthkey]['27']}}</td>
+              <td class="{{attendances[value.monthkey]['28']}}-color">{{attendances[value.monthkey]['28']}}</td>
+              <td class="{{attendances[value.monthkey]['29']}}-color">{{attendances[value.monthkey]['29']}}</td>
+              <td class="{{attendances[value.monthkey]['30']}}-color">{{attendances[value.monthkey]['30']}}</td>
+              <td class="{{attendances[value.monthkey]['31']}}-color">{{attendances[value.monthkey]['31']}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div align="center">
+            <p>{{language?.sattendance_total_holiday}}: {{totalcount.totalholiday}}, {{language?.sattendance_total_weekenday}}: {{totalcount.totalweekend}}, {{language?.sattendance_total_present}}: {{totalcount.totalpresent}}, {{language?.sattendance_total_absent}}: {{totalcount.totalabsent}}, {{language?.sattendance_total_late}}: {{totalcount.totallate}}, {{language?.sattendance_total_leaveday}}: {{totalcount.totalleave}}</p>
+          </div>
+        </div>
+      </ion-card>
+  </ng-container>
+</ion-content>

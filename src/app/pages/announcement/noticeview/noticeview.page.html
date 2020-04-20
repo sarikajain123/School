@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,noticeID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="notice">
+    <ion-card class="card-bg" *ngIf="notice">
+      <ion-card-header align="start" class="book-header">{{notice.title}}</ion-card-header>
+
+      <div class="imgcard" align="center">
+        <img  src="assets/notice.png" class="img2" align="center">
+      </div>
+      <ion-card-content>
+        <span [innerHTML]="notice.notice"></span>
+        <p>{{notice.date |date: "dd MMM yyy"}}</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

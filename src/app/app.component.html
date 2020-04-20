@@ -1,0 +1,82 @@
+<ion-app>
+  <ion-split-pane>
+    <ion-menu class="background-color2">
+        <div align="center" class="first-div">
+            <ion-row class="first-div-row">
+                <ion-col [size]="4">
+                    <div align="center">
+                        <img src="{{siteUrl}}uploads/images/{{loginprofile?.photo}}" class="img"   alt="" align="center">
+                    </div>
+                </ion-col>
+                <ion-col [size]="8">
+                    <div class="col-first-div">
+                        <div *ngIf="loginprofile?.name" class="second-div">
+                            <ion-icon  slot="start" name="person"  class="second-div-icon"></ion-icon>
+                            <ion-note slot="start" class="ionnote ion-label-css2" >{{loginprofile?.name}}</ion-note>
+                        </div>
+
+                        <div *ngIf="loginprofile?.usertype" class="second-div">
+                            <ion-icon  slot="start"   class="fa fa-hand-o-right second-div-icon"></ion-icon>
+                            <ion-note slot="start" class="ionnote ion-label-css2" >{{loginprofile?.usertype}}</ion-note>
+                        </div>
+
+                        <div *ngIf="loginprofile?.phone" class="second-div">
+                            <ion-icon  slot="start" name="call"  class="second-div-icon"></ion-icon>
+                            <ion-note slot="start" class="ionnote ion-label-css2" >{{loginprofile?.phone}}</ion-note>
+                        </div>
+                        <div *ngIf="loginprofile?.address" class="second-div">
+                            <ion-icon  slot="start" name="globe"  class="second-div-icon"></ion-icon>
+                            <ion-note slot="start" class="ionnote ion-label-css2" >{{loginprofile?.address}}</ion-note>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </div>
+
+        <ion-content class="background-color2 side-menu-gradient">
+            <ion-list class="side-menu-item">
+                <ng-container *ngFor="let menu of menus; index as i">
+                    <ion-menu-toggle auto-hide="false" *ngIf="!menu?.child;else child_content">
+                        <ion-item  [routerDirection]="'root'" [routerLink]="['/'+ menu.link]"  #rla="routerLinkActive" [routerLinkActive]="['active']" [disabled]="rla.isActive" class="side-menu-item" lines="none">
+                            <span  slot="start" class="fa {{menu.icon}} menu-icon-css" ></span>
+                            <ion-label class="ion-label-css">
+                                {{menu.menu}}
+                            </ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                    <ng-template #child_content>
+                        <ion-item class="side-menu-item" lines="none" button *ngIf="menu.child?.length > 0" (click)="menu.open = !menu.open" [class.parent-active]="menu.open" detail="false">
+                            <span  slot="start" class="fa {{menu.icon}} menu-icon-css" ></span>
+                            <span  slot="end" class="fa fa-angle-right span-fa" *ngIf="!menu.open" ></span>
+                            <span  slot="end" class="fa fa-angle-down span-fa"  *ngIf="menu.open" ></span>
+                            <ion-label  class="ion-label-css">
+                                {{menu.menu}}
+                            </ion-label>
+                        </ion-item>
+
+                        <ion-list *ngIf="menu.open">
+                            <ion-menu-toggle auto-hide="false" *ngFor="let chil of menu?.child">
+                                <ion-item [routerDirection]="'root'" [routerLink]="['/'+ chil.link]" #rla="routerLinkActive" [routerLinkActive]="['active']" [disabled]="rla.isActive" class="side-menu-item" lines="none">
+                                    <span  slot="start" class="fa {{chil.icon}} menu-icon-css" ></span>
+                                    <ion-label  class="ion-label-css">
+                                        {{chil.menu}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-menu-toggle>
+                        </ion-list>
+                    </ng-template>
+                </ng-container>
+                <ion-menu-toggle auto-hide="false">
+                    <ion-item [routerDirection]="'root'"  (click)="Logout()" class="side-menu-item" lines="none">
+                        <ion-icon class="menu-icon-css" slot="start" name="log-out"></ion-icon>
+                        <ion-label  class="ion-label-css">
+                           {{language?.logout}}
+                        </ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+            </ion-list>
+        </ion-content>
+    </ion-menu>
+    <ion-router-outlet main></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

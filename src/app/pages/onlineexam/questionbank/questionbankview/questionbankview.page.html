@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true, questionbankID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-card class="card-bg">
+    <ion-card-title style="margin: 10px;">
+      <span [innerHTML]="questions?.question"></span>
+    </ion-card-title>
+    <ion-radio-group>
+      <ng-container *ngIf="questions?.typeNumber == 3">
+        <ng-container *ngFor="let answer of answers[questions.questionBankID]">
+          <ion-item style="float: left" lines="none"><ion-radio mode="md"  [checked]="true" value="P" style="height: 23px;width: 25px;"></ion-radio><span style="margin-left: 10px; color: green;">{{answer?.text}}</span></ion-item>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="questions?.typeNumber == 2 || questions?.typeNumber == 1">
+        <ng-container *ngFor="let option of optionss[questions.questionBankID]">
+          <ng-container *ngFor="let answer of answers[questions.questionBankID]">
+            <ion-item style="float: left" lines="none" *ngIf="option.optionID == answer.optionID;else present_content"><ion-radio mode="md"  [checked]="true" value="P" style="height: 23px;width: 25px;"></ion-radio><span style="margin-left: 10px; color: green;">{{option?.name}}</span></ion-item>
+            <ng-template #present_content>
+              <ion-item style="float: left" lines="none"><ion-radio mode="md"  value="P" style="height: 23px;width: 25px;"></ion-radio><span style="margin-left: 10px; color: green;">{{option?.name}}</span></ion-item>
+            </ng-template>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ion-radio-group>
+  </ion-card>
+</ion-content>

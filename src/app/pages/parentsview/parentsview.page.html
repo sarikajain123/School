@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefreshProfile($event,true,parentsID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="imgcard" align="center" *ngIf="parentsprofile">
+    <img  color="secondary" *ngIf="parentsprofile" src="{{siteUrl}}uploads/images/{{parentsprofile?.photo}}" class="img2" align="center">
+  </div>
+  <ng-container  *ngIf="parentsprofile">
+    <ion-card class="card-bg">
+      <ion-card-header class="card-header2" (click)="isCollapsed(false)" *ngIf="parentitems;else other_content">
+        <span style="font-weight: bold">{{language?.parentss_information}}</span>
+        <ion-icon style="float: right;" name="add"></ion-icon>
+      </ion-card-header>
+      <ng-template #other_content>
+        <ion-card-header class="card-header2" (click)="isCollapsed(true)">
+          <span style="font-weight: bold">{{language?.parentss_information}}</span>
+          <ion-icon style="float: right;" name="remove"></ion-icon>
+        </ion-card-header>
+      </ng-template>
+      <ion-list  class="card-bg" *ngIf="!parentitems" >
+        <ion-item class="item-p" *ngIf="parentsprofile?.name">
+          <ion-label>
+            <p align="left">{{language?.parents_name}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{parentsprofile?.name}}</ion-note>
+        </ion-item>
+
+        <ion-item class="item-p" *ngIf="parentsprofile?.father_name">
+          <ion-label>
+            <p align="left">{{language?.parents_father_name}}</p>
+          </ion-label>
+          <ion-note slot="end"  class="ionnote">{{parentsprofile?.father_name}}</ion-note>
+        </ion-item>
+        <ion-item class="item-p" *ngIf="parentsprofile?.mother_name">
+          <ion-label>
+            <p align="left">{{language?.parents_mother_name}}</p>
+          </ion-label>
+          <ion-note slot="end"  class="ionnote">{{parentsprofile?.mother_name}}</ion-note>
+        </ion-item>
+        <ion-item class="item-p" *ngIf="parentsprofile?.father_profession">
+          <ion-label>
+            <p align="left">{{language?.parents_father_profession}}</p>
+          </ion-label>
+          <ion-note slot="end" style="color: black;font-size: 12px;">{{parentsprofile?.father_profession}}</ion-note>
+        </ion-item>
+        <ion-item class="item-p" *ngIf="parentsprofile?.mother_profession">
+          <ion-label>
+            <p align="left">{{language?.parents_mother_profession}}</p>
+          </ion-label>
+          <ion-note slot="end" style="color: black;font-size: 12px;">{{parentsprofile?.mother_profession}}</ion-note>
+        </ion-item>
+        <ion-item class="item-p" *ngIf="parentsprofile?.email">
+          <ion-label>
+            <p align="left">{{language?.parents_email}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{parentsprofile?.email}}</ion-note>
+        </ion-item>
+        <ion-item class="item-p" *ngIf="parentsprofile?.phone">
+          <ion-label>
+            <p align="left">{{language?.parents_phone}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{parentsprofile?.phone}}</ion-note>
+        </ion-item>
+        <ion-item class="item-p" *ngIf="parentsprofile?.address">
+          <ion-label>
+            <p align="left">{{language?.parents_address}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{parentsprofile?.address}}</ion-note>
+        </ion-item>
+      </ion-list>
+      <ng-container *ngIf="(permission.parents_add == 'yes' && permission.parents_delete == 'yes') || (loginuser.usertypeID == parentsprofile.usertypeID && loginuser.loginuserID == parentsprofile.parentsID)">
+        <!--Parents Information-->
+        <ion-card-header class="card-header" (click)="isCollapsedParent(false)" *ngIf="studentitems;else parent_content">
+          <span style="font-weight: bold">{{language?.parents_children}}</span>
+          <ion-icon style="float: right;" name="add"></ion-icon>
+        </ion-card-header>
+        <ng-template #parent_content>
+          <ion-card-header class="card-header1" (click)="isCollapsedParent(true)">
+            <span style="font-weight: bold">{{language?.parents_children}}</span>
+            <ion-icon style="float: right;" name="remove"></ion-icon>
+          </ion-card-header>
+        </ng-template>
+        <ng-container *ngIf="!studentitems">
+          <ion-card  class="card-student-css" *ngFor="let student of childrens">
+            <div style="margin: 8px;">
+              <ion-row>
+                <ion-col size="4">
+                  <img class="student-img" src="{{siteUrl}}uploads/images/{{student.photo}}">
+                </ion-col>
+                <ion-col size="8">
+                  <div class="text-div">
+                    <h3 class="text-h">{{student.name}}</h3>
+                    <p class="text-p">{{language?.parents_roll}}: {{student.roll}}</p>
+                    <p class="text-p">{{language?.parents_classes}}: {{student.srclasses}} ({{student.srsection}})</p>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-item class="ion-item-css" >
+                <ion-avatar class="avatar-img">
+                  <img src="assets/boy.png" />
+                </ion-avatar>
+                <ion-label>
+                  <h4 class="ion-text-h">{{language?.parents_username}}</h4>
+                  <ion-text color="secondary">
+                    <p class="ion-text-p">{{student.username}}</p>
+                  </ion-text>
+                </ion-label>
+              </ion-item>
+              <ion-item class="ion-item-css" >
+                <ion-avatar class="avatar-img">
+                  <img src="assets/sms.png" />
+                </ion-avatar>
+                <ion-label>
+                  <h4 class="ion-text-h">{{language?.parents_phone}}</h4>
+                  <ion-text color="secondary">
+                    <p class="ion-text-p">{{student.phone}}</p>
+                  </ion-text>
+                </ion-label>
+              </ion-item>
+            </div>
+          </ion-card>
+        </ng-container>
+      </ng-container>
+    </ion-card>
+  </ng-container>
+</ion-content>

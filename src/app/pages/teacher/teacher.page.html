@@ -1,0 +1,376 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  class="bg-image no-scroll" *ngIf="!myProfile">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card  class="card-teacher-css" *ngFor="let teacher of teachers" routerLink="/teacherview/{{teacher.teacherID}}">
+    <div class="div-margin" >
+      <ion-row>
+        <ion-col size="4">
+          <img class="teacher-img" src="{{siteUrl}}uploads/images/{{teacher.photo}}">
+        </ion-col>
+        <ion-col size="8">
+          <div class="text-div">
+            <h3 class="text-h">{{teacher.name}}</h3>
+            <p class="text-p">{{teacher.designation}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-item class="ion-item-css" >
+        <ion-avatar class="avatar-img">
+          <img src="assets/email.png" />
+        </ion-avatar>
+        <ion-label>
+          <h4 class="ion-text-h">{{language?.teacher_email}}</h4>
+          <ion-text color="secondary">
+            <p class="ion-text-p">{{teacher.email}}</p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item class="ion-item-css" >
+        <ion-avatar class="avatar-img">
+          <img src="assets/sms.png" />
+        </ion-avatar>
+        <ion-label>
+          <h4 class="ion-text-h">{{language?.teacher_phone}}</h4>
+          <ion-text color="secondary">
+            <p class="ion-text-p">{{teacher.phone}}</p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ion-card>
+</ion-content>
+<ion-content  *ngIf="myProfile" class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefreshProfile($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="imgcard" align="center" *ngIf="teacherprofile">
+    <img  color="secondary" *ngIf="teacherprofile" src="{{siteUrl}}uploads/images/{{teacherprofile?.photo}}" class="img2" align="center">
+  </div>
+    <ng-container  *ngIf="teacherprofile">
+        <ion-card class="card-bg1">
+            <ion-card-header class="card-header1" (click)="isCollapsed(false)" *ngIf="teacheritems;else other_content">
+                <span style="font-weight: bold">{{language?.personal_information}}</span>
+                <ion-icon style="float: right;" name="add"></ion-icon>
+            </ion-card-header>
+            <ng-template #other_content>
+                <ion-card-header class="card-header1" (click)="isCollapsed(true)">
+                    <span style="font-weight: bold">{{language?.personal_information}}</span>
+                    <ion-icon style="float: right;" name="remove"></ion-icon>
+                </ion-card-header>
+            </ng-template>
+            <ion-list  class="card-bg" *ngIf="!teacheritems" >
+                <ion-item class="item-p" *ngIf="teacherprofile?.name">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_name}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{teacherprofile?.name}}</ion-note>
+                </ion-item>
+
+                <ion-item class="item-p" *ngIf="teacherprofile?.sex">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_sex}}</p>
+                    </ion-label>
+                    <ion-note slot="end"  class="ionnote">{{teacherprofile?.sex}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="teacherprofile?.dob">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_dob}}</p>
+                    </ion-label>
+                    <ion-note slot="end"  class="ionnote">{{teacherprofile?.dob | date: "dd MMM yyyy"}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="teacherprofile?.phone">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_phone}}</p>
+                    </ion-label>
+                    <ion-note slot="end" style="color: black;font-size: 12px;">{{teacherprofile?.phone}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="teacherprofile?.email">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_email}}</p>
+                    </ion-label>
+                    <ion-note slot="end" style="color: black;font-size: 12px;">{{teacherprofile?.email}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="teacherprofile?.religion">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_religion}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{teacherprofile?.religion}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="teacherprofile?.jod">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_jod}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{teacherprofile?.jod | date: "dd MMM yyyy"}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="teacherprofile?.address">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_address}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{teacherprofile?.address}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="teacherprofile?.username">
+                    <ion-label>
+                        <p align="left">{{language?.teacher_username}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{teacherprofile?.username}}</ion-note>
+                </ion-item>
+            </ion-list>
+            <ng-container *ngIf="(permission.teacher_add == 'yes' && permission.teacher_delete == 'yes') || (loginuser.usertypeID == teacherprofile.usertypeID && loginuser.loginuserID == teacherprofile.teacherID)">
+                <!--Routine Information-->
+
+                <ion-card-header class="card-header" (click)="isCollapsedroutine(false)" *ngIf="routineitems;else teacher_content">
+                    <span style="font-weight: bold">{{language?.teacher_routine}}</span>
+                    <ion-icon style="float: right;" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #teacher_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedroutine(true)">
+                        <span style="font-weight: bold">{{language?.teacher_routine}}</span>
+                        <ion-icon style="float: right;" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <ion-slides [options]="slideOpts"  *ngIf="!routineitems">
+                    <ng-container *ngIf="routines">
+                        <ng-container *ngFor="let routine of routines; let i = index">
+                            <ion-slide class="" *ngIf="routine !='Weekend' && routine !=null">
+                                <div  class="ion-content-css">
+                                    <ion-card-header  class="routine-header">
+                                        <p>{{days[i].day}}</p>
+                                    </ion-card-header>
+                                    <ion-card  class="card-routine" *ngFor="let rotn of routine">
+                                        <div style="margin: 8px;">
+                                            <h3 class="text-color-h">{{rotn.subject}}</h3>
+                                            <p class="text-color-p">{{rotn.classes}} ({{rotn.section}})</p>
+                                            <ion-item class="p-text ion-item-css" >
+                                                <ion-avatar class="avatar-img">
+                                                    <img src="assets/routine.png" />
+                                                </ion-avatar>
+                                                <ion-label>
+                                                    <h4>{{language?.teacher_date}}</h4>
+                                                    <ion-text >
+                                                        <p>{{rotn.time}}</p>
+                                                    </ion-text>
+                                                </ion-label>
+                                            </ion-item>
+                                        </div>
+                                    </ion-card>
+                                </div>
+                            </ion-slide>
+                        </ng-container>
+                    </ng-container>
+                </ion-slides>
+
+                <!--Attendance Information-->
+
+                <ion-card-header class="card-header" (click)="isCollapsedattendance(false)" *ngIf="attendanceitems;else attendance_content">
+                    <span style="font-weight: bold">{{language?.teacher_attendance}}</span>
+                    <ion-icon style="float: right;" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #attendance_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedattendance(true)">
+                        <span style="font-weight: bold">{{language?.teacher_attendance}}</span>
+                        <ion-icon style="float: right;" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <div  *ngIf="!attendanceitems" style="margin-top: 10px;">
+                    <ion-card  class="card-bg1">
+                        <div style="overflow-x:scroll;">
+                            <table cellpadding="2" cellspacing="2" class="attendance_table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let value of attendancesMonth;">
+                                    <td >{{value.monthname}}</td>
+                                    <td class="{{attendances[value.monthkey]['1']}}-color">{{attendances[value.monthkey]['1']}}</td>
+                                    <td class="{{attendances[value.monthkey]['2']}}-color">{{attendances[value.monthkey]['2']}}</td>
+                                    <td class="{{attendances[value.monthkey]['3']}}-color">{{attendances[value.monthkey]['3']}}</td>
+                                    <td class="{{attendances[value.monthkey]['4']}}-color">{{attendances[value.monthkey]['4']}}</td>
+                                    <td class="{{attendances[value.monthkey]['5']}}-color">{{attendances[value.monthkey]['5']}}</td>
+                                    <td class="{{attendances[value.monthkey]['6']}}-color">{{attendances[value.monthkey]['6']}}</td>
+                                    <td class="{{attendances[value.monthkey]['7']}}-color">{{attendances[value.monthkey]['7']}}</td>
+                                    <td class="{{attendances[value.monthkey]['8']}}-color">{{attendances[value.monthkey]['8']}}</td>
+                                    <td class="{{attendances[value.monthkey]['9']}}-color">{{attendances[value.monthkey]['9']}}</td>
+                                    <td class="{{attendances[value.monthkey]['10']}}-color">{{attendances[value.monthkey]['10']}}</td>
+                                    <td class="{{attendances[value.monthkey]['11']}}-color">{{attendances[value.monthkey]['11']}}</td>
+                                    <td class="{{attendances[value.monthkey]['12']}}-color">{{attendances[value.monthkey]['12']}}</td>
+                                    <td class="{{attendances[value.monthkey]['13']}}-color">{{attendances[value.monthkey]['13']}}</td>
+                                    <td class="{{attendances[value.monthkey]['14']}}-color">{{attendances[value.monthkey]['14']}}</td>
+                                    <td class="{{attendances[value.monthkey]['15']}}-color">{{attendances[value.monthkey]['15']}}</td>
+                                    <td class="{{attendances[value.monthkey]['16']}}-color">{{attendances[value.monthkey]['16']}}</td>
+                                    <td class="{{attendances[value.monthkey]['17']}}-color">{{attendances[value.monthkey]['17']}}</td>
+                                    <td class="{{attendances[value.monthkey]['18']}}-color">{{attendances[value.monthkey]['18']}}</td>
+                                    <td class="{{attendances[value.monthkey]['19']}}-color">{{attendances[value.monthkey]['19']}}</td>
+                                    <td class="{{attendances[value.monthkey]['20']}}-color">{{attendances[value.monthkey]['20']}}</td>
+                                    <td class="{{attendances[value.monthkey]['21']}}-color">{{attendances[value.monthkey]['21']}}</td>
+                                    <td class="{{attendances[value.monthkey]['22']}}-color">{{attendances[value.monthkey]['22']}}</td>
+                                    <td class="{{attendances[value.monthkey]['23']}}-color">{{attendances[value.monthkey]['23']}}</td>
+                                    <td class="{{attendances[value.monthkey]['24']}}-color">{{attendances[value.monthkey]['24']}}</td>
+                                    <td class="{{attendances[value.monthkey]['25']}}-color">{{attendances[value.monthkey]['25']}}</td>
+                                    <td class="{{attendances[value.monthkey]['26']}}-color">{{attendances[value.monthkey]['26']}}</td>
+                                    <td class="{{attendances[value.monthkey]['27']}}-color">{{attendances[value.monthkey]['27']}}</td>
+                                    <td class="{{attendances[value.monthkey]['28']}}-color">{{attendances[value.monthkey]['28']}}</td>
+                                    <td class="{{attendances[value.monthkey]['29']}}-color">{{attendances[value.monthkey]['29']}}</td>
+                                    <td class="{{attendances[value.monthkey]['30']}}-color">{{attendances[value.monthkey]['30']}}</td>
+                                    <td class="{{attendances[value.monthkey]['31']}}-color">{{attendances[value.monthkey]['31']}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div align="center">
+                                <p style="margin: 10px;">{{language?.teacher_total_holiday}}: {{totalcount?.totalholiday}}, {{language?.teacher_total_weekenday}}: {{totalcount?.totalweekend}}, {{language?.teacher_total_present}}: {{totalcount?.totalpresent}}, {{language?.teacher_total_absent}}: {{totalcount?.totalabsent}}, {{language?.teacher_total_late}}: {{totalcount?.totallate}}, {{language?.teacher_total_leaveday}}: {{totalcount?.totalleave}}</p>
+                            </div>
+                        </div>
+                    </ion-card>
+                </div>
+
+                <!--salary information-->
+                <ion-card-header class="card-header" (click)="isCollapsedinvoices(false)" *ngIf="invoicesitems;else invoices_content">
+                    <span style="font-weight: bold">{{language?.teacher_salary}}</span>
+                    <ion-icon style="float: right;" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #invoices_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedinvoices(true)">
+                        <span style="font-weight: bold">{{language?.teacher_salary}}</span>
+                        <ion-icon style="float: right;" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <ion-list  class="card-bg" *ngIf="!invoicesitems">
+                    <ion-card>
+                        <div style="margin: 8px;">
+                            <ng-container  *ngIf="salary_template">
+                                <h3 class="text-color-h">  {{language?.teacher_salary_grades}} {{salary_template?.salary_grades}}</h3>
+                                <ion-item class="p-text ion-item-css">
+                                    <p> {{language?.teacher_basic_salary}} </p>
+                                    <div class="item-note" slot="end">
+                                        <p>{{salary_template?.basic_salary}}</p>
+                                    </div>
+                                </ion-item>
+                                <ion-item class="p-text ion-item-css">
+                                    <p>{{language?.teacher_overtime_rate}}</p>
+                                    <div class="item-note" slot="end">
+                                        <p>{{salary_template?.overtime_rate}}</p>
+                                    </div>
+                                </ion-item>
+                            </ng-container>
+                            <ng-container *ngIf="hourly_salary">
+                                <h3 class="text-color-h"> {{language?.teacher_salary_grades}} {{hourly_salary?.hourly_grades}}</h3>
+                                <ion-item class="p-text ion-item-css">
+                                    <p> {{language?.teacher_hourly_rate}} </p>
+                                    <div class="item-note" slot="end">
+                                        <p>{{hourly_salary?.hourly_rate}}</p>
+                                    </div>
+                                </ion-item>
+                            </ng-container>
+                        </div>
+                    </ion-card>
+                    <ion-card *ngIf="salaryoptions">
+                        <div style="margin: 8px;">
+                            <h3 class="text-color-h">  {{language?.teacher_allowances}}</h3>
+                            <ion-item class="p-text ion-item-css">
+                                <p>{{salaryoptions[0]?.label_name}}</p>
+                                <div class="item-note" slot="end">
+                                    <p>{{salaryoptions[0]?.label_amount }}</p>
+                                </div>
+                            </ion-item>
+                        </div>
+                    </ion-card>
+                    <ion-card *ngIf="salaryoptions">
+                        <div style="margin: 8px;">
+                            <h3 class="text-color-h">  {{language?.teacher_deductions}}</h3>
+                            <ion-item class="p-text ion-item-css">
+                                <p>{{salaryoptions[1]?.label_name}}</p>
+                                <div class="item-note" slot="end">
+                                    <p>{{salaryoptions[1]?.label_amount  }}</p>
+                                </div>
+                            </ion-item>
+                        </div>
+                    </ion-card>
+                    <ion-card>
+                        <div style="margin: 8px;">
+                            <h3 class="text-color-h">  {{language?.teacher_total_salary_details}}</h3>
+                            <ion-item class="p-text ion-item-css">
+                                <p>{{language?.teacher_gross_salary}}</p>
+                                <div class="item-note" slot="end">
+                                    <p>{{grosssalary }}</p>
+                                </div>
+                            </ion-item>
+                            <ion-item class="p-text ion-item-css">
+                                <p>{{language?.teacher_total_deduction}}</p>
+                                <div class="item-note" slot="end">
+                                    <p>{{totaldeduction }}</p>
+                                </div>
+                            </ion-item>
+                            <ion-item class="p-text ion-item-css">
+                                <p>{{language?.teacher_net_salary}}</p>
+                                <div class="item-note" slot="end">
+                                    <p>{{netsalary}}</p>
+                                </div>
+                            </ion-item>
+                        </div>
+                    </ion-card>
+                </ion-list>
+
+                <!--payments information-->
+                <ion-card-header class="card-header2" (click)="isCollapsedpayments(false)" *ngIf="paymentsitems;else payments_content">
+                    <span style="font-weight: bold">{{language?.teacher_payment}}</span>
+                    <ion-icon style="float: right;" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #payments_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedpayments(true)">
+                        <span style="font-weight: bold">{{language?.teacher_payment}}</span>
+                        <ion-icon style="float: right;" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <ion-list  class="card-bg" *ngIf="!paymentsitems">
+                    <ion-card *ngFor="let makepayment of make_payments">
+                        <div style="margin: 8px;">
+                            <h3 class="text-color-h"> {{makepayment.create_date | date: "dd MMM yyyy" }}</h3>
+                            <ion-item class="p-text ion-item-css" *ngIf="makepayment.month">
+                                <p>{{language?.teacher_month}}</p>
+                                <div class="item-note" slot="end">
+                                    <p>{{makepayment.month }}</p>
+                                </div>
+                            </ion-item>
+                            <ion-item class="p-text ion-item-css" *ngIf="makepayment.net_salary">
+                                <p>{{language?.teacher_net_salary}}</p>
+                                <div class="item-note" slot="end">
+                                    <p *ngIf="makepayment.total_hours"> {{makepayment.net_salary * makepayment.total_hours }}</p>
+                                    <p *ngIf="makepayment.total_hours==null"> {{makepayment.net_salary }}</p>
+                                </div>
+                            </ion-item>
+                            <ion-item class="p-text ion-item-css" *ngIf="makepayment.payment_amount">
+                                <p>{{language?.teacher_payment_amount}}</p>
+                                <div class="item-note" slot="end">
+                                    <p>{{makepayment.payment_amount }}</p>
+                                </div>
+                            </ion-item>
+                        </div>
+                    </ion-card>
+                </ion-list>
+            </ng-container>
+        </ion-card>
+    </ng-container>
+</ion-content>

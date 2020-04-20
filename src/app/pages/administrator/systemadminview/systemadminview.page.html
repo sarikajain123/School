@@ -1,0 +1,218 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,userID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="imgcard" align="center" *ngIf="systemadmin">
+    <img  color="secondary" *ngIf="systemadmin" src="{{siteUrl}}uploads/images/{{systemadmin?.photo}}" class="img2" align="center">
+  </div>
+  <ng-container  *ngIf="systemadmin">
+    <ion-card class="card-bg1">
+      <ion-card-header class="card-header1" (click)="isCollapsed(false)" *ngIf="useritems;else other_content">
+        <span style="font-weight: bold">{{language?.personal_information}}</span>
+        <ion-icon style="float: right;" name="add"></ion-icon>
+      </ion-card-header>
+      <ng-template #other_content>
+        <ion-card-header class="card-header1" (click)="isCollapsed(true)">
+          <span style="font-weight: bold">{{language?.personal_information}}</span>
+          <ion-icon style="float: right;" name="remove"></ion-icon>
+        </ion-card-header>
+      </ng-template>
+      <ion-list  class="card-bg" *ngIf="!useritems" >
+        <ion-item class="item" *ngIf="systemadmin?.name">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_name}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{systemadmin?.name}}</ion-note>
+        </ion-item>
+
+        <ion-item class="item" *ngIf="systemadmin?.sex">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_sex}}</p>
+          </ion-label>
+          <ion-note slot="end"  class="ionnote">{{systemadmin?.sex}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="systemadmin?.dob">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_dob}}</p>
+          </ion-label>
+          <ion-note slot="end"  class="ionnote">{{systemadmin?.dob | date: "dd MMM yyyy"}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="systemadmin?.phone">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_phone}}</p>
+          </ion-label>
+          <ion-note slot="end" style="color: black;font-size: 12px;">{{systemadmin?.phone}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="systemadmin?.email">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_email}}</p>
+          </ion-label>
+          <ion-note slot="end" style="color: black;font-size: 12px;">{{systemadmin?.email}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="systemadmin?.religion">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_religion}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{systemadmin?.religion}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="systemadmin?.jod">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_jod}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{systemadmin?.jod | date: "dd MMM yyyy"}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="systemadmin?.address">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_address}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{systemadmin?.address}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="systemadmin?.username">
+          <ion-label>
+            <p align="left">{{language?.systemadmin_username}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{systemadmin?.username}}</ion-note>
+        </ion-item>
+      </ion-list>
+
+
+      <!--salary information-->
+      <ion-card-header class="card-header" (click)="isCollapsedinvoices(false)" *ngIf="invoicesitems;else invoices_content">
+        <span style="font-weight: bold">{{language?.systemadmin_salary}}</span>
+        <ion-icon style="float: right;" name="add"></ion-icon>
+      </ion-card-header>
+      <ng-template #invoices_content>
+        <ion-card-header class="card-header" (click)="isCollapsedinvoices(true)">
+          <span style="font-weight: bold">{{language?.systemadmin_salary}}</span>
+          <ion-icon style="float: right;" name="remove"></ion-icon>
+        </ion-card-header>
+      </ng-template>
+      <ion-list  class="card-bg" *ngIf="!invoicesitems">
+        <ion-card>
+          <div style="margin: 8px;">
+            <ng-container  *ngIf="salary_template">
+              <h3 class="text-color-h">  {{language?.systemadmin_salary_grades}} {{salary_template?.salary_grades}}</h3>
+              <ion-item class="p-text ion-item-css">
+                <p> {{language?.systemadmin_basic_salary}} </p>
+                <div class="item-note" slot="end">
+                  <p>{{salary_template?.basic_salary}}</p>
+                </div>
+              </ion-item>
+              <ion-item class="p-text ion-item-css">
+                <p>{{language?.systemadmin_overtime_rate}}</p>
+                <div class="item-note" slot="end">
+                  <p>{{salary_template?.overtime_rate}}</p>
+                </div>
+              </ion-item>
+            </ng-container>
+            <ng-container *ngIf="hourly_salary">
+              <h3 class="text-color-h"> {{language?.systemadmin_salary_grades}} {{hourly_salary?.hourly_grades}}</h3>
+              <ion-item class="p-text ion-item-css">
+                <p> {{language?.systemadmin_hourly_rate}} </p>
+                <div class="item-note" slot="end">
+                  <p>{{hourly_salary?.hourly_rate}}</p>
+                </div>
+              </ion-item>
+            </ng-container>
+          </div>
+        </ion-card>
+        <ion-card *ngIf="salaryoptions[0]?.label_name">
+          <div style="margin: 8px;">
+            <h3 class="text-color-h">  {{language?.systemadmin_allowances}}</h3>
+            <ion-item class="p-text ion-item-css">
+              <p>{{salaryoptions[0]?.label_name}}</p>
+              <div class="item-note" slot="end">
+                <p>{{salaryoptions[0]?.label_amount }}</p>
+              </div>
+            </ion-item>
+          </div>
+        </ion-card>
+        <ion-card *ngIf="salaryoptions[1]?.label_name">
+          <div style="margin: 8px;">
+            <h3 class="text-color-h">  {{language?.systemadmin_deductions}}</h3>
+            <ion-item class="p-text ion-item-css">
+              <p>{{salaryoptions[1]?.label_name}}</p>
+              <div class="item-note" slot="end">
+                <p>{{salaryoptions[1]?.label_amount  }}</p>
+              </div>
+            </ion-item>
+          </div>
+        </ion-card>
+        <ion-card>
+          <div style="margin: 8px;">
+            <h3 class="text-color-h">  {{language?.systemadmin_total_salary_details}}</h3>
+            <ion-item class="p-text ion-item-css">
+              <p>{{language?.systemadmin_gross_salary}}</p>
+              <div class="item-note" slot="end">
+                <p>{{grosssalary }}</p>
+              </div>
+            </ion-item>
+            <ion-item class="p-text ion-item-css">
+              <p>{{language?.systemadmin_total_deduction}}</p>
+              <div class="item-note" slot="end">
+                <p>{{totaldeduction }}</p>
+              </div>
+            </ion-item>
+            <ion-item class="p-text ion-item-css">
+              <p>{{language?.systemadmin_net_salary}}</p>
+              <div class="item-note" slot="end">
+                <p>{{netsalary}}</p>
+              </div>
+            </ion-item>
+          </div>
+        </ion-card>
+      </ion-list>
+
+      <!--payments information-->
+      <ion-card-header class="card-header2" (click)="isCollapsedpayments(false)" *ngIf="paymentsitems;else payments_content">
+        <span style="font-weight: bold">{{language?.systemadmin_payment}}</span>
+        <ion-icon style="float: right;" name="add"></ion-icon>
+      </ion-card-header>
+      <ng-template #payments_content>
+        <ion-card-header class="card-header" (click)="isCollapsedpayments(true)">
+          <span style="font-weight: bold">{{language?.systemadmin_payment}}</span>
+          <ion-icon style="float: right;" name="remove"></ion-icon>
+        </ion-card-header>
+      </ng-template>
+      <ion-list  class="card-bg" *ngIf="!paymentsitems">
+        <ion-card *ngFor="let makepayment of make_payments">
+          <div style="margin: 8px;">
+            <h3 class="text-color-h"> {{makepayment.create_date | date: "dd MMM yyyy" }}</h3>
+            <ion-item class="p-text ion-item-css" *ngIf="makepayment.month">
+              <p>{{language?.systemadmin_month}}</p>
+              <div class="item-note" slot="end">
+                <p>{{makepayment.month }}</p>
+              </div>
+            </ion-item>
+            <ion-item class="p-text ion-item-css" *ngIf="makepayment.net_salary">
+              <p>{{language?.systemadmin_net_salary}}</p>
+              <div class="item-note" slot="end">
+                <p *ngIf="makepayment.total_hours"> {{makepayment.net_salary * makepayment.total_hours }}</p>
+                <p *ngIf="makepayment.total_hours==null"> {{makepayment.net_salary }}</p>
+              </div>
+            </ion-item>
+            <ion-item class="p-text ion-item-css" *ngIf="makepayment.payment_amount">
+              <p>{{language?.systemadmin_payment_amount}}</p>
+              <div class="item-note" slot="end">
+                <p>{{makepayment.payment_amount }}</p>
+              </div>
+            </ion-item>
+          </div>
+        </ion-card>
+      </ion-list>
+    </ion-card>
+  </ng-container>
+</ion-content>

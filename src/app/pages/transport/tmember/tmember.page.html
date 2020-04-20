@@ -1,0 +1,185 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+  <ng-container *ngIf="loginuser?.usertypeID != 3">
+  <ion-toolbar color="light" *ngIf="classes">
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.tmember_classes}}</ion-label>
+          <ion-select placeholder="{{language?.tmember_select_class}}" #select [(ngModel)]="selectedClass" (ionChange)="selectedClasses()">
+            <ion-select-option  *ngFor="let class of classes" value="{{class.classesID}}">{{class.classes}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  </ng-container>
+</ion-header>
+<ion-content  class="bg-image no-scroll"  *ngIf="!myProfile">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event ,true, classID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container *ngIf="students">
+    <ion-card  class="card-student-css" *ngFor="let student of students" routerLink="/tmemberview/{{student.studentID}}/{{student.classesID}}" >
+      <div style="margin: 8px;">
+        <ion-row>
+          <ion-col size="4">
+            <img class="student-img" src="{{siteUrl}}uploads/images/{{student.photo}}">
+          </ion-col>
+          <ion-col size="8">
+            <div class="text-div">
+              <h3 class="text-h">{{student.name}}</h3>
+              <p class="text-p">{{language?.tmember_roll}}:  {{student.roll}}</p>
+              <p class="text-p">{{language?.tmember_classes}}: {{student.srclasses}} ({{student.srsection}})</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-item class="ion-item-css" >
+          <ion-avatar class="avatar-img">
+            <img src="assets/sms.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4 class="ion-text-h">{{language?.tmember_phone}}</h4>
+            <ion-text color="secondary">
+              <p class="ion-text-p">{{student.phone}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>
+<ion-content *ngIf="myProfile"  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefreshProfile($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="imgcard" align="center" *ngIf="studentprofile">
+    <img  color="secondary" *ngIf="studentprofile" src="{{siteUrl}}uploads/images/{{studentprofile?.photo}}" class="img2" align="center">
+  </div>
+  <ng-container  *ngIf="studentprofile">
+    <ion-card class="card-bg">
+      <ion-card-header class="card-header1">
+        <span style="font-weight: bold">{{language?.personal_information}}</span>
+      </ion-card-header>
+      <ion-list  class="card-bg">
+        <ion-item class="item" *ngIf="studentprofile?.name">
+          <ion-label>
+            <p align="left">{{language?.tmember_name}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.name}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.srregisterNO">
+          <ion-label>
+            <p align="left">{{language?.tmember_registerNO}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.srregisterNO}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.srroll">
+          <ion-label>
+            <p align="left">{{language?.tmember_roll}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.srroll}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.srclasses">
+          <ion-label>
+            <p align="left">{{language?.tmember_classes}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.srclasses}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.srsection">
+          <ion-label>
+            <p align="left">{{language?.tmember_section}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.srsection}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.group">
+          <ion-label>
+            <p align="left">{{language?.tmember_studentgroup}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentGrup?.group}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.subject">
+          <ion-label>
+            <p align="left">{{language?.tmember_optionalsubject}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{optionalsubject?.subject}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.sex">
+          <ion-label>
+            <p align="left">{{language?.tmember_sex}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.sex}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.dob">
+          <ion-label>
+            <p align="left">{{language?.tmember_dob}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.dob | date: "dd MMM yyyy"}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.bloodgroup">
+          <ion-label>
+            <p align="left">{{language?.tmember_bloodgroup}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.bloodgroup}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.religion">
+          <ion-label>
+            <p align="left">{{language?.tmember_religion}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.religion}}</ion-note>
+        </ion-item>
+
+        <ion-item class="item" *ngIf="lmember?.tjoindate">
+          <ion-label>
+            <p align="left">{{language?.tmember_joindate}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{lmember?.tjoindate | date: "dd MMM yyyy"}}</ion-note>
+        </ion-item>
+
+        <ion-item class="item" *ngIf="transport?.route">
+          <ion-label>
+            <p align="left">{{language?.tmember_route_name}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{transport?.route}}</ion-note>
+        </ion-item>
+
+        <ion-item class="item" *ngIf="tmember?.tbalance">
+          <ion-label>
+            <p align="left">{{language?.tmember_tfee}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{tmember?.tbalance}}</ion-note>
+        </ion-item>
+
+        <ion-item class="item" *ngIf="studentprofile?.phone">
+          <ion-label>
+            <p align="left">{{language?.tmember_phone}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.phone}}</ion-note>
+        </ion-item>
+        <ion-item class="item" *ngIf="studentprofile?.email" lines="none">
+          <ion-label>
+            <p align="left">{{language?.tmember_email}}</p>
+          </ion-label>
+          <ion-note slot="end" class="ionnote">{{studentprofile?.email}}</ion-note>
+        </ion-item>
+      </ion-list>
+
+    </ion-card>
+  </ng-container>
+</ion-content>
+

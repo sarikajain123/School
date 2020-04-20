@@ -1,0 +1,30 @@
+
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="locations">
+      <ion-card class="card-bg" *ngFor="let location of locations">
+        <ion-card-header align="center" class="book-header">{{location.location}}</ion-card-header>
+        <ion-item class="p-text" *ngIf="location.description">
+          <div class="item-note" slot="start">
+            <h4>{{location.description}}</h4>
+          </div>
+        </ion-item>
+      </ion-card>
+  </ng-container>
+</ion-content>
+

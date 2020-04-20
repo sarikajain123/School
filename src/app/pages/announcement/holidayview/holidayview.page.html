@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,holidayID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="holiday">
+    <ion-card class="card-bg" *ngIf="holiday">
+      <ion-card-header align="center" class="book-header">{{holiday.title}}</ion-card-header>
+      <ng-container *ngIf="holiday.photo;else img_content">
+        <img  src="{{siteUrl}}uploads/images/{{holiday.photo}}">
+      </ng-container>
+      <ng-template #img_content>
+        <img src="assets/holiday.png">
+      </ng-template>      <p align="center">{{holiday.fdate |date: "dd MMM yyy"}} - {{holiday.tdate |date: "dd MMM yyy"}}</p>
+      <ion-card-content>
+        <span [innerHTML]="holiday.details"></span>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

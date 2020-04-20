@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar color="light" *ngIf="classes" style="margin-bottom: 10px;">
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.attendance_classes}}</ion-label>
+          <ion-select placeholder="{{language?.attendance_select_classes}}" #select [(ngModel)]="classesID" (ionChange)="selectedClasses()">
+            <ion-select-option  *ngFor="let class of classes" value="{{class.classesID}}">{{class.classes}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.sattendance_section}}</ion-label>
+          <ion-select placeholder="{{language?.attendance_select_section}}" #select [(ngModel)]="sectionID">
+            <ion-select-option  *ngFor="let section of sections" value="{{section.sectionID}}">{{section.section}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+      <ion-row *ngIf="attendanceType == 'subject'">
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.sattendance_subject}}</ion-label>
+          <ion-select placeholder="{{language?.attendance_select_subject}}" #select [(ngModel)]="subjectID">
+            <ion-select-option  *ngFor="let subject of subjects" value="{{subject.subjectID}}">{{subject.subject}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <ion-item>
+          <ion-label>{{language?.attendance_date}}</ion-label>
+          <li-ionic4-datepicker [(ngModel)]="myDate" [inputDateConfig]="datePickerObj"></li-ionic4-datepicker>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+      <ion-button (click)="addAttendance()">Add</ion-button>
+     <ion-button style="float: right" (click)="submitAttendance()" *ngIf="submitbutton">Submit</ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-card *ngIf="sattendanceinfo" class="background-color card-bg1">
+    <ion-card-header>
+      <div align="center" class="div-p">
+        <p>{{language?.attendance_classes}} : {{sattendanceinfo?.class}}</p>
+        <p>{{language?.sattendance_section}} : {{sattendanceinfo?.section}}</p>
+        <p>{{language?.attendance_day}} : {{sattendanceinfo?.day}}</p>
+        <p>{{language?.attendance_date}} : {{sattendanceinfo?.date}}</p>
+      </div>
+    </ion-card-header>
+  </ion-card>
+  <ng-container  *ngIf="students">
+    <ion-card class="card-bg" *ngFor="let student of students">
+      <div class="card-class">
+        <ion-item lines="none" class="p-text ion-item-css">
+          <ion-avatar slot="start">
+            <img src="{{siteUrl}}uploads/images/{{student.photo}}">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{student.name}}</h2>
+            <p>{{language?.attendance_roll}} : {{student.roll}}</p>
+          </ion-label>
+        </ion-item>
+        <ion-card-content>
+          <ion-radio-group>
+            <ion-item class="float-left" lines="none" *ngIf="Previesattendances[student.studentID][aday] == 'P';else present_content"><span style="margin-right: 5px; color: green;">P</span><ion-radio mode="md"  [checked]="true" (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'P')" value="P" style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            <ng-template #present_content>
+              <ion-item class="float-left" lines="none"><span style="margin-right: 5px; color: green;">P</span><ion-radio mode="md"  (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'P', $event)" value="P" style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            </ng-template>
+
+            <ion-item class="float-left" lines="none" *ngIf="Previesattendances[student.studentID][aday] == 'A';else a_content" ><span style="margin-right: 5px; color: #d33939">A</span><ion-radio mode="md" value="A" [checked]="true" (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'A')"  style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            <ng-template #a_content>
+              <ion-item class="float-left" lines="none"><span style="margin-right: 5px; color: #d33939">A</span><ion-radio mode="md" value="A"  (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'A')"  style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            </ng-template>
+
+            <ion-item class="float-left" lines="none" *ngIf="Previesattendances[student.studentID][aday] == 'L';else l_content"><span style="margin-right: 5px; color: #1D223a">L</span><ion-radio mode="md"  value="L"  [checked]="true" (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'L')"  style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            <ng-template #l_content>
+              <ion-item class="float-left" lines="none"><span style="margin-right: 5px; color: #1D223a">L</span><ion-radio mode="md"  value="L" (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'L')"  style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            </ng-template>
+
+            <ion-item class="float-left" lines="none"  *ngIf="Previesattendances[student.studentID][aday] == 'LA';else la_content"><span style="margin-right: 5px; color: #1B9BFB">LA</span><ion-radio mode="md"  value="LA" *ngIf="Previesattendances[student.studentID][aday] == 'LA';else la_content" [checked]="true" (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'LA')" style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            <ng-template #la_content>
+              <ion-item class="float-left" lines="none"><span style="margin-right: 5px; color: #1B9BFB">LA</span><ion-radio mode="md"  value="LA"  (ionSelect)="takeAttendance(Previesattendances[student.studentID].attendanceID, 'LA')" style="height: 16px;width: 16px;"></ion-radio></ion-item>
+            </ng-template>
+          </ion-radio-group>
+        </ion-card-content>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

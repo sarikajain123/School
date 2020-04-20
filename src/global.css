@@ -1,0 +1,44 @@
+@import url(~@ionic/angular/css/core.css);
+@import url(~@ionic/angular/css/normalize.css);
+@import url(~@ionic/angular/css/structure.css);
+@import url(~@ionic/angular/css/typography.css);
+@import url(~@ionic/angular/css/padding.css);
+@import url(~@ionic/angular/css/float-elements.css);
+@import url(~@ionic/angular/css/text-alignment.css);
+@import url(~@ionic/angular/css/text-transformation.css);
+@import url(~@ionic/angular/css/flex-utils.css);
+.img {
+  width: 36%;
+  border-radius: 50%;
+  margin: 10px;
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  -webkit-box-shadow: 0px 0px 142px -37px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 142px -37px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 142px -37px rgba(0, 0, 0, 0.75); }
+
+.background-color {
+  --background: #1D223a;
+  color: white; }
+
+.side-menu-item {
+  --background: none;
+  color: #2c323d;
+  font-weight: 300;
+  border: 20px; }
+
+.side-menu-item {
+  background: none; }
+
+.side-menu-item .activated {
+  background: rgba(255, 255, 255, 0.4); }
+
+.side-menu-item.active-page-highlight {
+  background: rgba(255, 255, 255, 0.4); }
+
+.side-menu-gradient {
+  background: -webkit-linear-gradient(left top, #2c323d, #2c323d);
+  background: -o-linear-gradient(bottom right, #2c323d, #2c323d);
+  background: -moz-linear-gradient(bottom right, #2c323d, #fff);
+  background: linear-gradient(to bottom right, #2c323d, #2c323d); }
+
+/*# sourceMappingURL=global.css.map */

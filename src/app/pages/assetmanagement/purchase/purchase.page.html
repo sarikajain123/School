@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="purchases">
+    <ion-card class="card-bg" *ngFor="let purchase of purchases">
+      <div class="card-class">
+        <h3 class="text-color-h">{{purchase.description}}</h3>
+        <p class="text-color-p">{{purchase.name}}</p>
+        <p class="text-color-p" *ngIf="purchase.unit==1">{{language?.purchase_quantity}} ({{purchase.quantity}}) {{language?.purchase_unit}} - {{language?.purchase_unit_kg}}</p>
+        <p class="text-color-p" *ngIf="purchase.unit==2">{{language?.purchase_quantity}} ({{purchase.quantity}}) {{language?.purchase_unit}} - {{language?.purchase_unit_piece}}</p>
+        <p class="text-color-p" *ngIf="purchase.unit==3">{{language?.purchase_quantity}} ({{purchase.quantity}}) {{language?.purchase_unit}} - {{language?.purchase_unit_other}}</p>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/teacher.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.purchased_by}}</h4>
+            <ion-text color="secondary">
+              <p>{{purchase.purchaser_name}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/routine.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.purchase_date}}</h4>
+            <ion-text color="secondary">
+              <p>{{purchase.purchase_date | date: "dd MMM yyyy" }}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/routine.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.purchase_service_date}}</h4>
+            <ion-text color="secondary">
+              <p>{{purchase.service_date | date: "dd MMM yyyy" }}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/routine.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.purchase_expire_date}}</h4>
+            <ion-text color="secondary">
+              <p>{{purchase.expire_date | date: "dd MMM yyyy" }}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

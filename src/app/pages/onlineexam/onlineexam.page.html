@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="online_exams?.length > 0">
+    <ion-card class="card-bg" *ngFor="let online_exam of online_exams; let i = index">
+      <div class="card-class">
+        <h3 class="text-color-h">{{online_exam.name}}</h3>
+        <ion-item class="p-text ion-item-css" >
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/exam.jpg" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{online_exam.name}}</h4>
+            <ion-text color="secondary">
+              <p *ngIf="online_exam.examStatus ==1">{{language?.online_exam_onetime}}</p>
+              <p *ngIf="online_exam.examStatus ==2">{{language?.online_exam_multipletime}}</p>
+              <p *ngIf="online_exam.published == 1;else no">{{language?.online_exam_published}} ({{language?.online_exam_yes}})</p>
+              <ng-template #no>
+                <p >{{language?.online_exam_published}} ({{language?.online_exam_no}})</p>
+              </ng-template>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>
+

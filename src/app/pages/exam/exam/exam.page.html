@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="examlist">
+    <ion-card class="card-bg" *ngFor="let exam of examlist; let i = index">
+      <div class="card-class">
+        <h3 class="text-color-h">{{language?.panel_title}} ({{i+1}})</h3>
+        <ion-item class="p-text ion-item-css" >
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/exam.jpg" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{exam.exam}}</h4>
+            <ion-text color="secondary">
+              <p>{{exam.date |date:"dd MMM yyyy"}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,28 @@
+    <ion-grid class="bg-image no-scroll">
+        <ion-row justify-content-center>
+            <ion-col align-self-center size-md="6" size-lg="5" size-xs="12" >
+                <div text-center>
+                    <img color="secondary" src="./../../../assets/logo.png" class="img"  alt="" align="center">
+                    <h4 class="login-h4">Intact Public School</h4>
+                </div>
+                <form novalidate [formGroup]="loginForm" (ngSubmit)="login()" >
+
+                    <div padding>
+                        <ion-item class="loginitem">
+                            <ion-input class="logininput" type="text" [(ngModel)]="user.username" formControlName="username" placeholder="Username"></ion-input>
+                        </ion-item>
+                        <ion-item class="loginitem">
+                            <ion-input type="password" class="logininput" [(ngModel)]="user.password" formControlName="password" placeholder="Password"></ion-input>
+                        </ion-item>
+                    </div>
+
+                    <div padding>
+                        <ion-button class="loginbutton" size="large"  type="submit" [disabled]="loginForm.invalid" expand="block">
+                            <span>Login</span>
+                            <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
+                        </ion-button>
+                    </div>
+                </form>
+            </ion-col>
+        </ion-row>
+    </ion-grid>

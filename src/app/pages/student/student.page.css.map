@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,iBAAiB;EACf,YAAY,EAAE,OAAO;EACrB,KAAK,EAAE,KAAK;;AAId,MAAO;EACL,KAAK,EAAE,GAAG;EACV,QAAQ,EAAE,IAAI;EACd,eAAe,EAAE,GAAG;EACpB,cAAc,EAAE,MAAM;EACtB,eAAe,EAAE,IAAI;EACrB,aAAa,EAAE,IAAI",
+"sources": ["student.page.scss"],
+"names": [],
+"file": "student.page.css"
+}

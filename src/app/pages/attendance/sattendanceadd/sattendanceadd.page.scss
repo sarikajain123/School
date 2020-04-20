@@ -1,0 +1,47 @@
+
+.round {
+  width: 54%;
+  --height: 60px;
+  --border-radius: 50%;
+  vertical-align: middle;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+
+.card-bg{
+  --background: #ffff !important;
+  margin-top: 10px;
+  border-radius: 10px;
+
+}
+.card-bg1 {
+  margin: 0px !important;
+  border-radius: 0px !important;
+}
+.div-p {
+  font-weight: bold;
+  color: white
+}
+.float-left {
+  float: left;
+}
+.card-header{
+  --background:#989aa2;
+  color: black;
+}
+
+.p-text p {
+  font-size: 13px;
+  color: #ffffff;
+}
+.p-text h2 {
+  font-size: 17px;
+  color: #ffffff;
+
+}
+
+
+.ion-item-css {
+  --ion-background-color:#adadaffc !important;
+}

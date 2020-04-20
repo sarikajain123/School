@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,eventID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="event">
+    <ion-card class="card-bg" *ngIf="event">
+      <ion-card-header align="start" class="book-header">{{event.title}}</ion-card-header>
+      <ng-container *ngIf="event.photo;else img_content">
+        <img  src="{{siteUrl}}uploads/images/{{event.photo}}">
+      </ng-container>
+      <ng-template #img_content>
+        <img src="assets/event.png">
+      </ng-template>
+      <p align="center">{{event.fdate |date: "dd MMM yyy"}} - {{event.tdate |date: "dd MMM yyy"}}</p>
+      <ion-card-content>
+        <span [innerHTML]="event.details"></span>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

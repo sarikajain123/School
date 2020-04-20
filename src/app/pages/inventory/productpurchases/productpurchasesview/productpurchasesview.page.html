@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true, productpurchaseID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div style="overflow-x:scroll;">
+    <ion-row class="invoice-info">
+      <ion-col [size]="8" class=" invoice-col" style="font-size: 13px;">
+        {{language?.productpurchase_from}}
+        <address>
+          <strong>{{productsupplier?.productsuppliercompanyname}}</strong><br>
+          {{productsupplier?.productsupplieraddress}}<br>
+          {{language?.productpurchase_phone}} : {{productsupplier?.productsupplierphone}}<br>
+          {{language?.productpurchase_email}} : {{productsupplier?.productsupplieremail}}<br>
+        </address>
+      </ion-col>
+      <ion-col [size]="4" style="font-size: 13px;">
+        <b>{{language?.productpurchase_referenceno}} : {{productpurchase?.productpurchasereferenceno}}</b><br>
+        {{language?.productpurchase_payment_status}} : <span class="text-green" *ngIf="productpurchase?.productpurchasestatus==2">{{language?.productpurchase_fully_paid}}</span><span class="text-green" *ngIf="productpurchase?.productpurchasestatus==1">{{language?.productpurchase_partial_paid}}</span><span class="text-green" *ngIf="productpurchase?.productpurchasestatus==0">{{language?.productpurchase_pending}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="" style="font-size: 13px;">
+        {{language?.productpurchase_to}}
+        <address>
+          <strong>{{language?.productpurchase_warehouse_name}} : {{productwarehouse?.productwarehousename}}</strong><br>
+           {{productwarehouse?.productwarehouseaddress}}<br>
+          {{productwarehouse?.productwarehousephone}}<br>
+          {{productwarehouse?.productwarehouseemail}}<br>
+        </address>
+      </ion-col>
+    </ion-row>
+    <br>
+    <div style="overflow-x:scroll;">
+      <table class="table table-bordered product-style">
+        <thead>
+        <tr>
+          <th class="col-lg-2">#</th>
+          <th class="col-lg-4">{{language?.productpurchase_description}}</th>
+          <th class="col-lg-2">{{language?.productpurchase_unit_price}}</th>
+          <th class="col-lg-2">{{language?.productpurchase_quantity}}</th>
+          <th class="col-lg-2">{{language?.productpurchase_subtotal}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of productpurchaseitems let rowIndex = index">
+          <td data-title="#">{{rowIndex+1}}</td>
+          <td data-title="Description">{{products[item.productID]}}</td>
+          <td data-title="unit price">{{item.productpurchaseunitprice}}</td>
+          <td data-title="Quantity">{{item.productpurchasequantity}}</td>
+          <td data-title="Subtotal">{{item?.subtotal}} </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="4"><span class="pull-right"><b>{{language?.productpurchase_total_amount}}</b></span></td>
+          <td><b>{{productpurchasepaid?.totalamount}}</b></td>
+        </tr>
+        <tr>
+          <td colspan="4"><span class="pull-right"><b>{{language?.productpurchase_paid}}</b></span></td>
+          <td><b>{{productpurchasepaid?.productpurchasepaidamount}}</b></td>
+        </tr>
+        <tr>
+          <td colspan="4"><span class="pull-right"><b>{{language?.productpurchase_balance}}</b></span></td>
+          <td><b>{{productpurchasepaid?.balanceamount}}</b></td>
+        </tr>
+        </tfoot>
+      </table>
+
+      <div class="col-sm-3 col-xs-12 pull-right">
+        <div class="well well-sm">
+          <p>
+            {{language?.productpurchase_create_by}} : {{createuser}} <br>
+            {{language?.productpurchase_date}} : {{productpurchase?.productpurchasedate |date: "dd MMM yyyy" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

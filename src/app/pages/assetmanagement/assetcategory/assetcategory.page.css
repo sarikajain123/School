@@ -1,0 +1,37 @@
+.bg-class {
+  --background: #1D223a !important; }
+
+.div-bg {
+  background-color: #ef1961 !important; }
+
+.relative-card {
+  position: relative;
+  bottom: 95px; }
+
+.imgcard {
+  background-color: #1D223a !important;
+  margin: 20px 21px 50px;
+  height: 40px; }
+
+.card-bg {
+  --background: white !important;
+  margin-top: 0px;
+  border-radius: 15px; }
+
+.card-header {
+  --background: #989aa2;
+  color: black; }
+
+.p-text p {
+  font-size: 13px;
+  color: #666; }
+
+.p-text h4 {
+  font-size: 13px;
+  color: #000000; }
+
+.invoice-header {
+  background-color: #989aa2;
+  color: #000000; }
+
+/*# sourceMappingURL=assetcategory.page.css.map */

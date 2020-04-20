@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Pull to refresh"
+                refreshingSpinner="circles"
+                refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ng-container  *ngIf="classesData">
+        <ion-card  class="card-bg" *ngFor="let class of classesData">
+            <div class="card-class">
+                <h3 class="text-color-h">{{class.classes}} ({{class.classes_numeric}})</h3>
+                <ion-item class="p-text ion-item-css" >
+                    <ion-avatar class="avatar-img">
+                        <img src="assets/teacher.png" />
+                    </ion-avatar>
+                    <ion-label>
+                        <h4>{{language?.Teacher}}</h4>
+                        <ion-text color="secondary">
+                            <p>{{teachers[class.teacherID]}}</p>
+                        </ion-text>
+                    </ion-label>
+                </ion-item>
+            </div>
+        </ion-card>
+    </ng-container>
+</ion-content>

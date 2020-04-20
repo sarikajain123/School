@@ -1,0 +1,71 @@
+.welcome-card ion-img {
+  max-height: 35vh;
+  overflow: hidden; }
+
+
+
+.item-style {
+  --background: #1D223a;
+  color: white;
+  margin-top: 0px; }
+
+.student {
+  color: white;
+  border-radius: 10px;
+  background: #1B9BFB;
+  margin-right: 5px; }
+
+.parents {
+  color: white;
+  border-radius: 10px;
+  background: #ef1961;
+  margin-right: 5px; }
+
+.teacher {
+  color: white;
+  border-radius: 10px;
+  background: #FDC031;
+  margin-right: 5px; }
+
+.subject {
+  color: white;
+  border-radius: 10px;
+  background: #4EB876;
+  margin-right: 5px; }
+
+.h2-style {
+  color: white;
+  margin: 15px;
+  line-height: 0px; }
+
+.student-info {
+  background: #1D223a;
+  color: white;
+  border-radius: 10px;
+  margin-right: 5px; }
+
+.student-info-img {
+  margin-top: 10px; }
+
+.student-info-img img {
+  width: 65%; }
+
+.student-info-p {
+  margin: 5px; }
+
+.student-activities {
+  background: #EFEFEF;
+  color: black;
+  border-radius: 10px;
+  margin-right: 5px; }
+
+.student-activities-img {
+  margin-top: 10px; }
+
+.student-activities-img img {
+  width: 65%; }
+
+.student-activities-p {
+  margin: 5px; }
+
+/*# sourceMappingURL=home.page.css.map */

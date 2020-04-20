@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,visitorID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="visitorinfo">
+    <ion-card class="card-bg" *ngIf="visitorinfo">
+      <ion-card-header align="center" class="book-header">{{visitorinfo.name}}</ion-card-header>
+      <img *ngIf="visitorinfo.photo" src="{{siteUrl}}uploads/visitor/{{visitorinfo.photo}}">
+      <p align="center" *ngIf="user">{{language?.to_meet}} - {{user}}</p>
+      <ion-card-content>
+        <ion-list  class="card-bg" *ngIf="visitorinfo" >
+          <ion-item class="item" *ngIf="visitorinfo?.name">
+            <ion-label>
+              <p align="left">{{language?.name}}</p>
+            </ion-label>
+            <ion-note slot="end" class="ionnote">{{visitorinfo?.name}}</ion-note>
+          </ion-item>
+
+          <ion-item class="item" *ngIf="visitorinfo?.email_id">
+            <ion-label>
+              <p align="left">{{language?.email_id}}</p>
+            </ion-label>
+            <ion-note slot="end"  class="ionnote">{{visitorinfo?.email_id}}</ion-note>
+          </ion-item>
+          <ion-item class="item" *ngIf="visitorinfo?.phone">
+            <ion-label>
+              <p align="left">{{language?.phone}}</p>
+            </ion-label>
+            <ion-note slot="end" style="color: black;font-size: 12px;">{{visitorinfo?.phone}}</ion-note>
+          </ion-item>
+
+          <ion-item class="item" *ngIf="teacherprofile?.company_name">
+            <ion-label>
+              <p align="left">{{language?.company_name}}</p>
+            </ion-label>
+            <ion-note slot="end" class="ionnote">{{teacherprofile?.company_name}}</ion-note>
+          </ion-item>
+          <ion-item class="item" *ngIf="teacherprofile?.coming_from">
+            <ion-label>
+              <p align="left">{{language?.coming_from}}</p>
+            </ion-label>
+            <ion-note slot="end" class="ionnote">{{teacherprofile?.coming_from}}</ion-note>
+          </ion-item>
+          <ion-item class="item" *ngIf="visitorinfo?.check_in">
+            <ion-label>
+              <p align="left">{{language?.check_in}}</p>
+            </ion-label>
+            <ion-note slot="end"  class="ionnote">{{visitorinfo?.check_in | date: "dd MMM yyyy HH:mm:ss"}}</ion-note>
+          </ion-item>
+          <ion-item class="item" *ngIf="visitorinfo?.check_out">
+            <ion-label>
+              <p align="left">{{language?.check_out}}</p>
+            </ion-label>
+            <ion-note slot="end" class="ionnote">{{visitorinfo?.check_out | date: "dd MMM yyyy HH:mm:ss"}}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

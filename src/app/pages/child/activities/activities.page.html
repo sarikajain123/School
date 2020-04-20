@@ -1,0 +1,55 @@
+
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="activities">
+    <ion-card class="card-bg"   *ngFor="let activitie of activities">
+      <ion-item class="p-text ion-item-css" lines="none">
+        <ion-avatar slot="start">
+          <img  src="{{siteUrl}}uploads/images/{{user[activitie?.usertypeID][activitie?.userID]?.photo}}">
+        </ion-avatar>
+        <ion-label>
+          <h4>{{user[activitie?.usertypeID][activitie?.userID]?.name}}</h4>
+          <ion-text>
+            <p>{{language?.activities_shared_publicly}}-{{activitie?.create_date | date: "dd MMM yyyy HH:mm"}}</p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-list  class="card-bg">
+        <ion-card-content>
+          {{activitie?.description}}
+        </ion-card-content>
+        <ion-row class="cardfooter">
+          <ion-col>
+            <ion-item class="p-text ion-item-css" *ngFor="let coments of activitiescomments[activitie?.activitiesID]" lines="none">
+              <ion-avatar slot="start">
+                <img src="{{siteUrl}}uploads/images/{{user[coments?.usertypeID][coments?.userID]?.photo}}">
+              </ion-avatar>
+              <ion-label>
+                <h2 style="color: white">{{user[coments?.usertypeID][coments?.userID]?.name}}</h2>
+                <ion-text>
+                  <p>{{coments?.comment}}</p>
+                </ion-text>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card>
+  </ng-container>
+</ion-content>
+

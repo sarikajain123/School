@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,mailandsmstemplateID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="mailandsmstemplate">
+    <ion-card class="card-bg">
+      <div class="card-class">
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/notice.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{mailandsmstemplate?.name}}</h4>
+            <ion-text>
+              <p>{{mailandsmstemplate?.type}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-card-content>
+          <span>{{mailandsmstemplate?.template}}</span>
+        </ion-card-content>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

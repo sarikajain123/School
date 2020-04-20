@@ -1,0 +1,64 @@
+.bg-class {
+  --background: #1D223a !important; }
+
+.div-bg {
+  background-color: #ef1961 !important; }
+
+.avatar-bg {
+  --background: #1D223a;
+  color: #ffffff; }
+
+.relative-card {
+  position: relative;
+  bottom: 50px; }
+
+.imgcard {
+  background-color: #1D223a !important;
+  margin: 20px 21px 50px; }
+
+.card-bg {
+  --background: white !important;
+  margin-top: 0px;
+  border-radius: 15px; }
+
+.card-header1 {
+  --background: #989aa2;
+  color: black;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px; }
+
+.card-header {
+  --background: #989aa2;
+  color: black;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  margin-top: 1px; }
+
+.ionnote {
+  color: black;
+  font-size: 12px; }
+
+.row {
+  border: 1px solid; }
+
+.row p {
+  color: black; }
+
+.item {
+  border-bottom-color: #989aa2; }
+
+.item p {
+  font-size: 12px;
+  color: #666; }
+
+.username {
+  font-size: 14px;
+  margin: 0px;
+  color: white; }
+
+.hedding {
+  line-height: 0px;
+  font-size: 17px;
+  color: white; }
+
+/*# sourceMappingURL=salarytemplateview.page.css.map */

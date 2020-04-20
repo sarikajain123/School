@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="gradeList">
+    <ion-card class="card-bg" *ngFor="let grade of gradeList; let i = index">
+      <div class="card-class">
+        <h3 class="text-color-h">{{language?.grade_name}} ({{grade.grade}})</h3>
+        <p class="text-color-p">{{language?.grade_point}}({{grade.point}})</p>
+        <ion-item class="p-text ion-item-css" >
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/mark.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.grade_gradefrom}} ({{grade.gradefrom}})</h4>
+            <ion-text color="secondary">
+              <p>{{language?.grade_gradeupto}} ({{grade.gradeupto}})</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

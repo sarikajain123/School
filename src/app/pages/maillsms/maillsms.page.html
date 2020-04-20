@@ -1,0 +1,38 @@
+<ion-header>
+    <ion-toolbar class="background-color">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title align="center">{{language?.panel_title}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content   class="bg-image no-scroll">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Pull to refresh"
+                refreshingSpinner="circles"
+                refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ng-container *ngIf="mailsms?.length > 0">
+    <ion-card class="card-bg"  *ngFor="let mlsm of mailsms; let i = index" routerLink="/maillsmsview/{{mlsm.mailandsmsID}}">
+        <div class="card-class">
+            <h3 class="text-color-h">{{mlsm.usertype}}</h3>
+            <ion-item class="p-text ion-item-css" >
+                <ion-avatar style="margin-right: 10px">
+                    <img src="assets/sms.png" />
+                </ion-avatar>
+                <ion-label>
+                    <h4>{{mlsm.type}}</h4>
+                    <ion-text color="secondary">
+                        <p>{{mlsm.create_date | date: "dd MMM yyyy HH:mm:ss"}}</p>
+                    </ion-text>
+                </ion-label>
+            </ion-item>
+        </div>
+    </ion-card>
+    </ng-container>
+</ion-content>
+
+

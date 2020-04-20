@@ -1,0 +1,49 @@
+
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="productwarehouses">
+    <ion-card class="card-bg"  *ngFor="let productwarehouse of productwarehouses">
+      <div class="card-class">
+        <h3 class="text-color-h">{{productwarehouse.productwarehousename}}</h3>
+        <p class="text-color-p">{{language?.productwarehouse_code}} ({{productwarehouse.productwarehousecode}})</p>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/email.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.productwarehouse_email}}</h4>
+            <ion-text>
+              <p>{{productwarehouse.productwarehouseemail}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/phone.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.productwarehouse_phone}}</h4>
+            <ion-text>
+              <p>{{productwarehouse.productwarehousephone}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

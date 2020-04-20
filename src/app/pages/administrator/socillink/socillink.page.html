@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll" >
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event ,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container *ngIf="sociallinks">
+    <ion-card  class="card-student-css" *ngFor="let sociallink of sociallinks">
+      <div style="margin: 8px;">
+        <ion-row>
+          <ion-col size="4">
+            <img class="student-img" src="{{siteUrl}}uploads/images/{{alluser[sociallink.usertypeID][sociallink.userID].photo}}">
+          </ion-col>
+          <ion-col size="8">
+            <div class="text-div">
+              <h3 class="text-h">{{alluser[sociallink.usertypeID][sociallink.userID].name}}</h3>
+              <p class="text-p">{{alluser[sociallink.usertypeID][sociallink.userID].usertype}}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-item class="ion-item-css" *ngIf="sociallink.facebook" >
+          <ion-avatar class="avatar-img">
+            <img src="assets/facebook.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4 class="ion-text-h">{{language?.sociallink_facebook}}</h4>
+            <ion-text color="secondary">
+              <p class="ion-text-p">{{sociallink.facebook}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="ion-item-css" *ngIf="sociallink.twitter" >
+          <ion-avatar class="avatar-img">
+            <img src="assets/twitter.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4 class="ion-text-h">{{language?.sociallink_twitter}}</h4>
+            <ion-text color="secondary">
+              <p class="ion-text-p">{{sociallink.twitter}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="ion-item-css" *ngIf="sociallink.linkedin" >
+          <ion-avatar class="avatar-img">
+            <img src="assets/linkedin.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4 class="ion-text-h">{{language?.sociallink_linkedin}}</h4>
+            <ion-text color="secondary">
+              <p class="ion-text-p">{{sociallink.linkedin}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="ion-item-css" *ngIf="sociallink.googleplus" >
+          <ion-avatar class="avatar-img">
+            <img src="assets/googleplus.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4 class="ion-text-h">{{language?.sociallink_googleplus}}</h4>
+            <ion-text color="secondary">
+              <p class="ion-text-p">{{sociallink.googleplus}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

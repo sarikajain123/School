@@ -1,0 +1,544 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefreshProfile($event,true,studentID,classID)" *ngIf="isRefresh">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Pull to refresh"
+                refreshingSpinner="circles"
+                refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <div class="imgcard" align="center" *ngIf="studentprofile">
+        <img  color="secondary" *ngIf="studentprofile" src="{{siteUrl}}uploads/images/{{studentprofile?.photo}}" class="img2" align="center">
+    </div>
+    <ng-container  *ngIf="studentprofile">
+        <ion-card class="card-bg2">
+            <ion-card-header class="card-header1" (click)="isCollapsed(false)" *ngIf="studentitems;else other_content">
+                <span class="ion-card-span">{{language?.personal_information}}</span>
+                <ion-icon class="ion-icon-css" name="add"></ion-icon>
+            </ion-card-header>
+            <ng-template #other_content>
+                <ion-card-header class="card-header1" (click)="isCollapsed(true)">
+                    <span class="ion-card-span">{{language?.personal_information}}</span>
+                    <ion-icon class="ion-icon-css" name="remove"></ion-icon>
+                </ion-card-header>
+            </ng-template>
+            <ion-list  class="card-bg" *ngIf="!studentitems" >
+                <ion-item class="item-p" *ngIf="studentprofile?.name">
+                    <ion-label>
+                        <p align="left">{{language?.student_name}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.name}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.srregisterNO">
+                    <ion-label>
+                        <p align="left">{{language?.student_registerNO}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.srregisterNO}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.srroll">
+                    <ion-label>
+                        <p align="left">{{language?.student_roll}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.srroll}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.srclasses">
+                    <ion-label>
+                        <p align="left">{{language?.student_classes}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.srclasses}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.srsection">
+                    <ion-label>
+                        <p align="left">{{language?.student_section}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.srsection}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.group">
+                    <ion-label>
+                        <p align="left">{{language?.student_studentgroup}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentGrup?.group}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.subject">
+                    <ion-label>
+                        <p align="left">{{language?.student_optionalsubject}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{optionalsubject?.subject}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.sex">
+                    <ion-label>
+                        <p align="left">{{language?.student_sex}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.sex}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.dob">
+                    <ion-label>
+                        <p align="left">{{language?.student_dob}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.dob | date: "dd MMM yyyy"}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.bloodgroup">
+                    <ion-label>
+                        <p align="left">{{language?.student_bloodgroup}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.bloodgroup}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.religion">
+                    <ion-label>
+                        <p align="left">{{language?.student_religion}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.religion}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.phone">
+                    <ion-label>
+                        <p align="left">{{language?.student_phone}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.phone}}</ion-note>
+                </ion-item>
+                <ion-item class="item-p" *ngIf="studentprofile?.email">
+                    <ion-label>
+                        <p align="left">{{language?.student_email}}</p>
+                    </ion-label>
+                    <ion-note slot="end" class="ionnote">{{studentprofile?.email}}</ion-note>
+                </ion-item>
+            </ion-list>
+            <ng-container *ngIf="(permission.student_add == 'yes' && permission.student_delete == 'yes') || (loginuser.usertypeID == studentprofile.usertypeID && loginuser.loginuserID == studentprofile.studentID)">
+                <!--Parents Information-->
+                <ion-card-header class="card-header" (click)="isCollapsedParent(false)" *ngIf="parentitems;else parent_content">
+                    <span class="ion-card-span">{{language?.parents_information}}</span>
+                    <ion-icon class="ion-icon-css" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #parent_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedParent(true)">
+                        <span class="ion-card-span">{{language?.parents_information}}</span>
+                        <ion-icon class="ion-icon-css" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <ion-list  class="card-bg" *ngIf="!parentitems">
+
+                    <ion-item class="item-p" *ngIf="parents?.name">
+                        <ion-label>
+                            <p align="left"> {{language?.student_name }}</p>
+                        </ion-label>
+                        <ion-note slot="end"  class="ionnote">{{parents?.name}}</ion-note>
+                    </ion-item>
+
+                    <ion-item class="item-p" *ngIf="parents?.father_name">
+                        <ion-label>
+                            <p align="left">{{language?.parent_father_name}}</p>
+                        </ion-label>
+                        <ion-note slot="end"  class="ionnote">{{parents?.father_name}}</ion-note>
+                    </ion-item>
+                    <ion-item class="item-p" *ngIf="parents?.mother_name">
+                        <ion-label>
+                            <p align="left">{{language?.parent_mother_name}}</p>
+                        </ion-label>
+                        <ion-note slot="end"  class="ionnote">{{parents?.mother_name}}</ion-note>
+                    </ion-item>
+                    <ion-item class="item-p" *ngIf="parents?.father_profession">
+                        <ion-label>
+                            <p align="left">{{language?.parent_father_profession}}</p>
+                        </ion-label>
+                        <ion-note slot="end" style="color: black;font-size: 12px;">{{parents?.father_profession}}</ion-note>
+                    </ion-item>
+                    <ion-item class="item-p" *ngIf="parents?.mother_profession">
+                        <ion-label>
+                            <p align="left">{{language?.parent_mother_profession}}</p>
+                        </ion-label>
+                        <ion-note slot="end" style="color: black;font-size: 12px;">{{parents?.mother_profession}}</ion-note>
+                    </ion-item>
+                    <ion-item class="item-p" *ngIf="parents?.email">
+                        <ion-label>
+                            <p align="left">{{language?.parent_email}}</p>
+                        </ion-label>
+                        <ion-note slot="end" class="ionnote">{{parents?.email}}</ion-note>
+                    </ion-item>
+                    <ion-item class="item-p" *ngIf="parents?.phone">
+                        <ion-label>
+                            <p align="left">{{language?.parent_phone}}</p>
+                        </ion-label>
+                        <ion-note slot="end" class="ionnote">{{parents?.phone}}</ion-note>
+                    </ion-item>
+                    <ion-item class="item-p" *ngIf="parents?.address">
+                        <ion-label>
+                            <p align="left">{{language?.parent_address}}</p>
+                        </ion-label>
+                        <ion-note slot="end" class="ionnote">{{parents?.address}}</ion-note>
+                    </ion-item>
+                </ion-list>
+
+                <!--Attendance Information-->
+
+                <ion-card-header class="card-header" (click)="isCollapsedattendance(false)" *ngIf="attendanceitems;else attendance_content">
+                    <span class="ion-card-span">{{language?.student_attendance}}</span>
+                    <ion-icon class="ion-icon-css" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #attendance_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedattendance(true)">
+                        <span class="ion-card-span">{{language?.student_attendance}}</span>
+                        <ion-icon class="ion-icon-css" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <div  *ngIf="!attendanceitems" >
+                    <div *ngIf="attendanceType == 'subject'">
+                        <ion-card  *ngFor="let subject of attendancesubjects; let i = index" class="ion-card-css-attend">
+                            <ng-container *ngIf="i == 0">
+                                <ion-card-header class="card-header-attend">
+                                    <span class="ion-card-span"> {{subject.subject}} {{language?.student_attendance}}</span>
+                                </ion-card-header>
+                            </ng-container>
+                            <ng-container *ngIf="i !=0">
+                                <ion-card-header class="card-header">
+                                    <span class="ion-card-span"> {{subject.subject}} {{language?.student_attendance}}</span>
+                                </ion-card-header>
+                            </ng-container>
+                            <div class="div-overflow-css">
+                                <table cellpadding="2" cellspacing="2" class="attendance_table">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let value of attendancesMonth;">
+                                        <td >{{value.monthname}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['1']}}-color">{{attendances[subject.subjectID][value.monthkey]['1']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['2']}}-color">{{attendances[subject.subjectID][value.monthkey]['2']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['3']}}-color">{{attendances[subject.subjectID][value.monthkey]['3']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['4']}}-color">{{attendances[subject.subjectID][value.monthkey]['4']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['5']}}-color">{{attendances[subject.subjectID][value.monthkey]['5']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['6']}}-color">{{attendances[subject.subjectID][value.monthkey]['6']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['7']}}-color">{{attendances[subject.subjectID][value.monthkey]['7']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['8']}}-color">{{attendances[subject.subjectID][value.monthkey]['8']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['9']}}-color">{{attendances[subject.subjectID][value.monthkey]['9']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['10']}}-color">{{attendances[subject.subjectID][value.monthkey]['10']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['11']}}-color">{{attendances[subject.subjectID][value.monthkey]['11']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['12']}}-color">{{attendances[subject.subjectID][value.monthkey]['12']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['13']}}-color">{{attendances[subject.subjectID][value.monthkey]['13']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['14']}}-color">{{attendances[subject.subjectID][value.monthkey]['14']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['15']}}-color">{{attendances[subject.subjectID][value.monthkey]['15']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['16']}}-color">{{attendances[subject.subjectID][value.monthkey]['16']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['17']}}-color">{{attendances[subject.subjectID][value.monthkey]['17']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['18']}}-color">{{attendances[subject.subjectID][value.monthkey]['18']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['19']}}-color">{{attendances[subject.subjectID][value.monthkey]['19']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['20']}}-color">{{attendances[subject.subjectID][value.monthkey]['20']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['21']}}-color">{{attendances[subject.subjectID][value.monthkey]['21']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['22']}}-color">{{attendances[subject.subjectID][value.monthkey]['22']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['23']}}-color">{{attendances[subject.subjectID][value.monthkey]['23']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['24']}}-color">{{attendances[subject.subjectID][value.monthkey]['24']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['25']}}-color">{{attendances[subject.subjectID][value.monthkey]['25']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['26']}}-color">{{attendances[subject.subjectID][value.monthkey]['26']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['27']}}-color">{{attendances[subject.subjectID][value.monthkey]['27']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['28']}}-color">{{attendances[subject.subjectID][value.monthkey]['28']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['29']}}-color">{{attendances[subject.subjectID][value.monthkey]['29']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['30']}}-color">{{attendances[subject.subjectID][value.monthkey]['30']}}</td>
+                                        <td class="{{attendances[subject.subjectID][value.monthkey]['31']}}-color">{{attendances[subject.subjectID][value.monthkey]['31']}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div align="center">
+                                    <p style="margin: 10px">{{language?.student_total_holiday}}: {{totalcount[subject.subjectID].totalholiday}}, {{language?.student_total_weekenday}}: {{totalcount[subject.subjectID].totalweekend}}, {{language?.student_total_present}}: {{totalcount[subject.subjectID].totalpresent}}, {{language?.student_total_absent}}: {{totalcount[subject.subjectID].totalabsent}}, {{language?.student_total_late}}: {{totalcount[subject.subjectID].totallate}}, {{language?.student_total_leaveday}}: {{totalcount[subject.subjectID].totalleave}}</p>
+                                </div>
+                            </div>
+                        </ion-card>
+                    </div>
+                </div>
+                <div  *ngIf="!attendanceitems" class="div-margin-css">
+                    <ion-card  class="ion-card-css-attend" *ngIf="attendanceType == 'day'">
+                        <div class="div-overflow-css">
+                            <table cellpadding="2" cellspacing="2" class="attendance_table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let value of attendancesMonth;">
+                                    <td >{{value.monthname}}</td>
+                                    <td class="{{attendances[value.monthkey]['1']}}-color">{{attendances[value.monthkey]['1']}}</td>
+                                    <td class="{{attendances[value.monthkey]['2']}}-color">{{attendances[value.monthkey]['2']}}</td>
+                                    <td class="{{attendances[value.monthkey]['3']}}-color">{{attendances[value.monthkey]['3']}}</td>
+                                    <td class="{{attendances[value.monthkey]['4']}}-color">{{attendances[value.monthkey]['4']}}</td>
+                                    <td class="{{attendances[value.monthkey]['5']}}-color">{{attendances[value.monthkey]['5']}}</td>
+                                    <td class="{{attendances[value.monthkey]['6']}}-color">{{attendances[value.monthkey]['6']}}</td>
+                                    <td class="{{attendances[value.monthkey]['7']}}-color">{{attendances[value.monthkey]['7']}}</td>
+                                    <td class="{{attendances[value.monthkey]['8']}}-color">{{attendances[value.monthkey]['8']}}</td>
+                                    <td class="{{attendances[value.monthkey]['9']}}-color">{{attendances[value.monthkey]['9']}}</td>
+                                    <td class="{{attendances[value.monthkey]['10']}}-color">{{attendances[value.monthkey]['10']}}</td>
+                                    <td class="{{attendances[value.monthkey]['11']}}-color">{{attendances[value.monthkey]['11']}}</td>
+                                    <td class="{{attendances[value.monthkey]['12']}}-color">{{attendances[value.monthkey]['12']}}</td>
+                                    <td class="{{attendances[value.monthkey]['13']}}-color">{{attendances[value.monthkey]['13']}}</td>
+                                    <td class="{{attendances[value.monthkey]['14']}}-color">{{attendances[value.monthkey]['14']}}</td>
+                                    <td class="{{attendances[value.monthkey]['15']}}-color">{{attendances[value.monthkey]['15']}}</td>
+                                    <td class="{{attendances[value.monthkey]['16']}}-color">{{attendances[value.monthkey]['16']}}</td>
+                                    <td class="{{attendances[value.monthkey]['17']}}-color">{{attendances[value.monthkey]['17']}}</td>
+                                    <td class="{{attendances[value.monthkey]['18']}}-color">{{attendances[value.monthkey]['18']}}</td>
+                                    <td class="{{attendances[value.monthkey]['19']}}-color">{{attendances[value.monthkey]['19']}}</td>
+                                    <td class="{{attendances[value.monthkey]['20']}}-color">{{attendances[value.monthkey]['20']}}</td>
+                                    <td class="{{attendances[value.monthkey]['21']}}-color">{{attendances[value.monthkey]['21']}}</td>
+                                    <td class="{{attendances[value.monthkey]['22']}}-color">{{attendances[value.monthkey]['22']}}</td>
+                                    <td class="{{attendances[value.monthkey]['23']}}-color">{{attendances[value.monthkey]['23']}}</td>
+                                    <td class="{{attendances[value.monthkey]['24']}}-color">{{attendances[value.monthkey]['24']}}</td>
+                                    <td class="{{attendances[value.monthkey]['25']}}-color">{{attendances[value.monthkey]['25']}}</td>
+                                    <td class="{{attendances[value.monthkey]['26']}}-color">{{attendances[value.monthkey]['26']}}</td>
+                                    <td class="{{attendances[value.monthkey]['27']}}-color">{{attendances[value.monthkey]['27']}}</td>
+                                    <td class="{{attendances[value.monthkey]['28']}}-color">{{attendances[value.monthkey]['28']}}</td>
+                                    <td class="{{attendances[value.monthkey]['29']}}-color">{{attendances[value.monthkey]['29']}}</td>
+                                    <td class="{{attendances[value.monthkey]['30']}}-color">{{attendances[value.monthkey]['30']}}</td>
+                                    <td class="{{attendances[value.monthkey]['31']}}-color">{{attendances[value.monthkey]['31']}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div align="center">
+                                <p style="margin: 10px">{{language?.student_total_holiday}}: {{totalcount.totalholiday}}, {{language?.student_total_weekenday}}: {{totalcount.totalweekend}}, {{language?.student_total_present}}: {{totalcount.totalpresent}}, {{language?.student_total_absent}}: {{totalcount.totalabsent}}, {{language?.student_total_late}}: {{totalcount.totallate}}, {{language?.student_total_leaveday}}: {{totalcount.totalleave}}</p>
+                            </div>
+                        </div>
+                    </ion-card>
+                </div>
+
+                <!--Mark Information-->
+
+                <ion-card-header class="card-header" (click)="isCollapsedmark(false)" *ngIf="markitems;else marks_content">
+                    <span class="ion-card-span">{{language?.student_mark}}</span>
+                    <ion-icon class="ion-icon-css" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #marks_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedmark(true)">
+                        <span class="ion-card-span">{{language?.student_mark}}</span>
+                        <ion-icon class="ion-icon-css" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+
+                <div class="div-overflow-css" *ngIf="!markitems">
+                    <ng-container *ngIf="marks && marksettings">
+                        <ion-card *ngFor="let markE of objectKeys(marksettings)">
+                            <ion-card-header class="card-header">
+                                <span class="ion-card-span">{{exams[markE]}}</span>
+                            </ion-card-header>
+                            <div class="div-overflow-css">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center" rowspan="2" style="background-color:#1D223a;color:#fff;">{{language?.student_subject}}</th>
+                                        <th colspan="2" class=" text-center" style="background-color:#1D223a;color:#fff;" *ngFor="let markpercentage of marksettings[markE]?.markpercentageKey">{{markpercentages[markpercentage]?.markpercentagetype}}</th>
+                                        <th colspan="3" class="text-center " style="background-color:#1D223a;color:#fff;">{{language?.student_total}}</th>
+                                    </tr>
+                                    <tr>
+                                        <ng-container *ngFor="let markpercentage of marksettings[markE]?.markpercentageKey">
+                                            <th class="bg-sky text-center ">{{language?.student_obtained_mark}}</th>
+                                            <th class="bg-sky-light text-center" data-title="Highest Mark">{{language?.student_highest_mark}}</th>
+                                        </ng-container>
+                                        <th class="bg-sky-total text-center" style="background-color: #6a94c1">{{language?.student_mark}}</th>
+                                        <th class="bg-purple-shipu text-center" data-title="Point" style="background-color: #5eb171">{{language?.student_point}}</th>
+                                        <th class="bg-sky-total-grade text-center" data-title="Grade" style="background-color: #5fbfce">{{language?.student_grade}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let subjectkey of marksettings[markE].subjectKeys">
+                                        <td class="text-black" data-title="Subject">{{subjects[subjectkey].subject}}</td>
+                                        <ng-container *ngFor="let markpercentage of marksettings[markE].markpercentageKey">
+                                            <ng-container *ngIf="marksettings[markE][subjectkey]['own'][markpercentage] == markpercentage;else other_content">
+                                                <ng-container *ngIf="marks[markE][subjectkey];else mark_content">
+                                                    <td class="text-black" data-title="Mark" >{{marks[markE][subjectkey][markpercentage]}}</td>
+                                                </ng-container>
+                                                <ng-template #mark_content>
+                                                    <td class="text-black" data-title="Mark" >N/A</td>
+                                                </ng-template>
+                                                <td class="text-black" data-title="Highest Mark">{{highestmarks[markE][subjectkey][markpercentage]}}</td>
+                                            </ng-container>
+
+                                            <ng-template #other_content>
+                                                <td class="text-black" data-title="Mark"></td>
+                                                <td class="text-black" data-title="Highest Mark"></td>
+                                            </ng-template>
+                                        </ng-container>
+                                        <ng-container *ngIf="marksettings[markE][subjectkey].totalSumMark && marksettings[markE][subjectkey].gradepoint && marksettings[markE][subjectkey].grade;else tgg_mark">
+                                            <td class="text-black" data-title="Mark">{{marksettings[markE][subjectkey].totalSumMark}}</td>
+                                            <td class="text-black" data-title="Point">{{marksettings[markE][subjectkey].gradepoint}}</td>
+                                            <td class="text-black" data-title="Grade">{{marksettings[markE][subjectkey].grade}}</td>
+                                        </ng-container>
+                                        <ng-template #tgg_mark>
+                                            <td class="text-black" data-title="Mark">{{totalSumpoint}}</td>
+                                            <td class="text-black" data-title="Point">{{totalSumpoint.toFixed(2)}}</td>
+                                            <ng-container *ngFor="let gread of grades">
+                                                <td class="text-black" data-title="Grade" *ngIf="gread.gradefrom == 0">{{gread.grade}}</td>
+                                            </ng-container>
+                                        </ng-template>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="box-footer" style="padding-left:0px;">
+                                    <p class="text-black" style="margin-top: 17px; width: max-content;">&nbsp;&nbsp;{{language?.student_total_marks}} : <span class="text-red text-bold">{{marksettings[markE].totalSubjectMarks}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{language?.student_total_obtained_marks}} : <span class="text-red text-bold">{{marksettings[markE].totalExamMarks}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{language?.student_total_average_marks}} : <span class="text-red text-bold">{{marksettings[markE].totalAverageMarks}} </span>&nbsp;<br>&nbsp;&nbsp;{{language?.student_total_average_marks_percetage}} : <span class="text-red text-bold">{{marksettings[markE].greadAverageMarks}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{language?.student_gpa}} : <span class="text-red text-bold">{{marksettings[markE].totalAveragegpa}}</span>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                </div>
+                            </div>
+                        </ion-card>
+                    </ng-container>
+                </div>
+
+                <!--Routine Information-->
+
+                <ion-card-header class="card-header" (click)="isCollapsedroutine(false)" *ngIf="routineitems;else student_content">
+                    <span class="ion-card-span">{{language?.student_routine}}</span>
+                    <ion-icon class="ion-icon-css" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #student_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedroutine(true)">
+                        <span class="ion-card-span">{{language?.student_routine}}</span>
+                        <ion-icon class="ion-icon-css" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <ion-slides [options]="slideOpts"  *ngIf="!routineitems">
+                    <ng-container *ngIf="routines">
+                        <ng-container *ngFor="let routine of routines; let i = index">
+                            <ion-slide class="" *ngIf="routine !='Weekend' && routine !=null">
+                                <div  class="ion-content-css">
+                                    <ion-card-header  class="routine-header">
+                                        <p>{{days[i].day}}</p>
+                                    </ion-card-header>
+                                    <ion-card  class="card-routine" *ngFor="let rotn of routine">
+                                        <div style="margin: 8px;">
+                                            <h3 class="text-color-h">{{rotn.subject}}</h3>
+                                            <ion-item class="p-text ion-item-css" >
+                                                <ion-avatar class="avatar-img">
+                                                    <img src="assets/routine.png" />
+                                                </ion-avatar>
+                                                <ion-label>
+                                                    <h4>{{language?.student_date}}</h4>
+                                                    <ion-text>
+                                                        <p>{{rotn.time}}</p>
+                                                    </ion-text>
+                                                </ion-label>
+                                            </ion-item>
+                                            <ion-item class="p-text ion-item-css" >
+                                                <ion-avatar class="avatar-img">
+                                                    <img src="assets/teacher.png" />
+                                                </ion-avatar>
+                                                <ion-label>
+                                                    <h4>{{language?.Teacher}}</h4>
+                                                    <ion-text >
+                                                        <p>{{rotn.teacher}}</p>
+                                                    </ion-text>
+                                                </ion-label>
+                                            </ion-item>
+                                        </div>
+                                    </ion-card>
+                                </div>
+                            </ion-slide>
+                        </ng-container>
+                    </ng-container>
+                </ion-slides>
+
+                <!--invoices information-->
+                <ion-card-header class="card-header" (click)="isCollapsedinvoices(false)" *ngIf="invoicesitems;else invoices_content">
+                    <span class="ion-card-span">{{language?.student_invoice}}</span>
+                    <ion-icon class="ion-icon-css" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #invoices_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedinvoices(true)">
+                        <span class="ion-card-span">{{language?.student_invoice}}</span>
+                        <ion-icon class="ion-icon-css" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <ng-container  *ngIf="!invoicesitems">
+                    <ng-container *ngIf="invoices">
+                        <ion-card class="card-bg1"  *ngFor="let invoice of invoices">
+                            <div class="card-class">
+                                <h3 class="text-color-h">{{invoice.feetype}}</h3>
+                                <ion-item class="ion-item-css">
+                                    <ion-avatar class="avatar-img">
+                                        <img src="assets/routine.png" />
+                                    </ion-avatar>
+                                    <ion-label>
+                                        <h4 class="h-text">{{language?.student_date}}</h4>
+                                        <ion-text>
+                                            <p class="p-text">{{invoice.date | date: "dd MMM yyyy"}}</p>
+                                        </ion-text>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item class="ion-item-css">
+                                    <ion-avatar class="avatar-img">
+                                        <img src="assets/invoice.png" />
+                                    </ion-avatar>
+                                    <ion-label>
+                                        <h4 class="h-text">{{language?.student_fees_amount}} - {{invoice.amount}} </h4>
+                                        <ion-text>
+                                            <p class="p-text">{{language?.student_discount}} - {{invoice.discount}}</p>
+                                        </ion-text>
+                                    </ion-label>
+                                </ion-item>
+                            </div>
+                        </ion-card>
+                    </ng-container>
+                </ng-container>
+
+                <!--payments information-->
+                <ion-card-header class="card-header" (click)="isCollapsedpayments(false)" *ngIf="paymentsitems;else payments_content">
+                    <span class="ion-card-span">{{language?.student_payment}}</span>
+                    <ion-icon class="ion-icon-css" name="add"></ion-icon>
+                </ion-card-header>
+                <ng-template #payments_content>
+                    <ion-card-header class="card-header" (click)="isCollapsedpayments(true)">
+                        <span class="ion-card-span">{{language?.student_payment}}</span>
+                        <ion-icon class="ion-icon-css" name="remove"></ion-icon>
+                    </ion-card-header>
+                </ng-template>
+                <ng-container  *ngIf="!paymentsitems">
+                    <ng-container *ngIf="payments">
+                        <ion-card class="card-bg1"  *ngFor="let payment of payments">
+                            <div class="card-class">
+                                <h3 class="text-color-h">{{payment.feetype}}</h3>
+                                <p class="text-color-p">{{language?.student_paymentmethod}}: {{payment.paymenttype}}</p>
+                                <ion-item class=" ion-item-css">
+                                    <ion-avatar class="avatar-img">
+                                        <img src="assets/routine.png" />
+                                    </ion-avatar>
+                                    <ion-label>
+                                        <h4 class="h-text">{{language?.student_date}}</h4>
+                                        <ion-text>
+                                            <p class="p-text">{{payment.paymentdate | date: "dd MMM yyyy"}}</p>
+                                        </ion-text>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item class=" ion-item-css">
+                                    <ion-avatar class="avatar-img">
+                                        <img src="assets/invoice.png" />
+                                    </ion-avatar>
+                                    <ion-label>
+                                        <h4 class="h-text">{{language?.student_fees_amount}} - {{payment.amount}} </h4>
+                                        <ion-text>
+                                            <p class="p-text">{{language?.student_paid}} - {{payment.paymentamount}}</p>
+                                        </ion-text>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item class=" ion-item-css">
+                                    <ion-avatar class="avatar-img">
+                                        <img src="assets/invoice.png" />
+                                    </ion-avatar>
+                                    <ion-label>
+                                        <h4 *ngIf="payment.weaver" class="h-text">{{language?.student_weaver}} - {{payment.weaver}} </h4>
+                                        <h4 *ngIf="payment.weaver==null" class="h-text">{{language?.student_weaver}} - {{0}}</h4>
+                                        <ion-text>
+                                            <p class="p-text" *ngIf="payment.fine">{{language?.student_fine}} - {{payment.fine}}</p>
+                                            <p class="p-text" *ngIf="payment.fine == null">{{language?.student_fine}} - {{0}}</p>
+                                        </ion-text>
+                                    </ion-label>
+                                </ion-item>
+                            </div>
+                        </ion-card>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </ion-card>
+    </ng-container>
+</ion-content>

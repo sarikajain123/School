@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="div-overflow-css">
+    <ion-row class="invoice-info">
+      <ion-col [size]="8" class=" invoice-col font-size" >
+          {{language?.invoice_from}}
+          <address>
+          <strong>{{siteinfos?.sname}}</strong><br>
+          {{siteinfos?.address}}<br>
+          {{language?.invoice_phone}} : {{siteinfos?.phone}}<br>
+            {{language?.invoice_email}} : {{siteinfos?.email}}<br>
+        </address>
+      </ion-col>
+      <ion-col [size]="4" class="font-size">
+        <b>{{language?.invoice_invoice}}{{maininvoice?.maininvoiceID}}</b><br>
+        {{language?.invoice_status}} : <span class="text-green" *ngIf="maininvoice?.maininvoicestatus==2">{{language?.invoice_fully_paid}}</span><span class="text-green" *ngIf="maininvoice?.maininvoicestatus==1">{{language?.invoice_partially_paid}}</span><span class="text-green" *ngIf="maininvoice?.maininvoicestatus==0">{{language?.invoice_notpaid}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="font-size" >
+        {{language?.invoice_to}}
+        <address>
+        <strong>{{maininvoice?.srname}}</strong><br>
+        {{language?.invoice_roll}} : {{maininvoice?.srroll}}<br>
+        {{language?.invoice_class}} : {{maininvoice?.srclasses}}<br>
+        {{language?.invoice_registerno}} :{{maininvoice?.registerNO}}<br>
+      </address>
+      </ion-col>
+    </ion-row>
+    <br>
+    <div class="div-overflow-css">
+          <table class="table table-bordered product-style">
+            <thead>
+            <tr>
+              <th class="col-lg-2">#</th>
+              <th class="col-lg-4">{{language?.invoice_feetype}}</th>
+              <th class="col-lg-2">{{language?.invoice_amount}}</th>
+              <th class="col-lg-2">{{language?.invoice_discount}}</th>
+              <th class="col-lg-2">{{language?.invoice_subtotal}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let invoice of invoices let rowIndex = index">
+              <td data-title="#">{{rowIndex+1}}</td>
+              <td data-title="Fee Type">{{invoice.feetype}}</td>
+              <td data-title="Amount">{{invoice.amount}}</td>
+              <td data-title="Discount">{{invoice?.dicountamount}}</td>
+              <td data-title="Subtotal">{{invoice?.subtotal}} </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <td colspan="4"><span class="pull-right"><b>{{language?.invoice_totalamount}}</b></span></td>
+              <td><b>{{grandtotalandpayment?.totalamount}}</b></td>
+            </tr>
+            <tr>
+              <td colspan="4"><span class="pull-right"><b>{{language?.invoice_totalpaid}}</b></span></td>
+              <td><b>{{grandtotalandpayment?.totalpayment}}</b></td>
+            </tr>
+            <tr>
+              <td colspan="4"><span class="pull-right"><b>{{language?.invoice_totalweaver}}</b></span></td>
+              <td><b>{{grandtotalandpayment?.totalweaver}}</b></td>
+            </tr>
+            <tr>
+              <td colspan="4"><span class="pull-right"><b>Balance (USD)</b></span></td>
+              <td><b>{{grandtotalandpayment?.balanceamount}}</b></td>
+            </tr>
+            <tr>
+              <td colspan="4"><span class="pull-right"><b>{{language?.invoice_fine}}</b></span></td>
+              <td><b>{{grandtotalandpayment?.totalfine}}</b></td>
+            </tr>
+            </tfoot>
+          </table>
+
+      <div class="col-sm-3 col-xs-12 pull-right">
+        <div class="well well-sm">
+          <p>
+            {{language?.invoice_create_by}} : {{createuser}} <br>
+            {{language?.invoice_date}} : {{maininvoice?.maininvoicedate |date: "dd MMM yyyy" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

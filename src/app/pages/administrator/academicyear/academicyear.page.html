@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="schoolyears">
+    <ion-card class="card-bg"  *ngFor="let school of schoolyears">
+      <div class="card-class">
+        <h4 class="text-color-h"> {{language?.panel_title}} {{school?.schoolyear}}</h4>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/routine.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.schoolyear_startingdate}}</h4>
+            <ion-text>
+              <p>{{school?.startingdate |date:"dd MMM yyyy"}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/routine.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.schoolyear_endingdate}}</h4>
+            <ion-text>
+              <p>{{school?.endingdate |date:"dd MMM yyyy"}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

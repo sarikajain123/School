@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,leaveapplicationID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="leaveapply && applicant">
+    <ion-card class="card-bg">
+      <div class="card-class">
+        <ion-row>
+          <ion-col size="4">
+            <ng-container *ngIf="applicant.photo">
+              <img class="notice-img" src="{{siteUrl}}uploads/images/{{applicant.photo}}">
+            </ng-container>
+          </ion-col>
+          <ion-col size="8">
+            <div class="text-div">
+              <h4 class="text-color-h"> {{applicant?.name}}</h4>
+              <p class="text-color-p"> {{applicant?.usertype}}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/routine.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.leaveapplication_dob}}</h4>
+            <ion-text>
+              <p>{{applicant?.dob | date: "dd MMM yyyy"}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/sms.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.leaveapplication_phone}}</h4>
+            <ion-text>
+              <p>{{applicant?.phone}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+    <ion-card class="card-bg">
+      <div class="card-class">
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/leave.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{leaveapply?.category}}</h4>
+            <ion-text>
+              <p *ngIf="leaveapply?.status == 1">{{language?.leaveapplication_status_approved}}</p>
+              <p *ngIf="leaveapply?.status == 0">{{language?.leaveapplication_status_declined}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-card-content>
+          <p>{{language?.leaveapplication_date}}-{{leaveapply.apply_date | date:"dd MMM yyyy HH:mm:ss" }}</p>
+          <span  [innerHTML]="leaveapply?.reason"></span>
+        </ion-card-content>
+        <ng-container *ngIf="daysArray">
+          <ion-item class="p-text ion-item-css">
+            <ion-label>
+              <h4>{{language?.leaveapplication_schedule}}</h4>
+              <ion-text>
+                <p>{{daysArray?.fromdate | date:"dd MMM yyyy" }} - {{daysArray?.todate | date:"dd MMM yyyy" }}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item class="p-text ion-item-css">
+            <ion-label>
+              <h4>{{language?.leaveapplication_availableleavedays}} ({{daysArray?.totaldayCount - daysArray?.leavedayCount}})</h4>
+            </ion-label>
+          </ion-item>
+          <ion-item class="p-text ion-item-css">
+            <ion-label>
+              <h4>{{language?.leaveapplication_leavedays}} ({{daysArray?.leavedayCount}})</h4>
+            </ion-label>
+          </ion-item>
+          <ion-item class="p-text ion-item-css">
+            <ion-label>
+              <h4>{{language?.leaveapplication_holidays}} ({{daysArray?.holidayCount}})</h4>
+            </ion-label>
+          </ion-item>
+          <ion-item class="p-text ion-item-css">
+            <ion-label>
+              <h4>{{language?.leaveapplication_weekenddays}} ({{daysArray?.weekenddayCount}})</h4>
+            </ion-label>
+          </ion-item>
+          <ion-item class="p-text ion-item-css">
+            <ion-label>
+              <h4>{{language?.leaveapplication_totaldays}} ({{daysArray?.totaldayCount}})</h4>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>
+

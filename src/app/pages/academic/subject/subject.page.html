@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+  <ng-container *ngIf="loginuser?.usertypeID != 3">
+  <ion-toolbar color="light" *ngIf="classes">
+        <ion-row>
+            <ion-col col-12 no-padding>
+                <ion-item>
+                    <ion-label>{{language?.subject_classes}}</ion-label>
+                    <ion-select placeholder="{{language?.subject_select_classes}}" #select [(ngModel)]="selectedClass" (ionChange)="selectedClasses()">
+                        <ion-select-option  *ngFor="let class of classes" value="{{class.classesID}}">{{class.classes}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+  </ng-container>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,classID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="subjects">
+    <ion-card class="card-bg" *ngFor="let subject of subjects">
+      <div class="card-class">
+        <h3 class="text-color-h">{{subject.subject}} ({{subject.subject_code}})</h3>
+        <ion-item class="p-text ion-item-css" >
+          <ion-avatar class="avatar-img">
+            <img src="assets/subject.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.subject_finalmark}} ({{subject.finalmark}})</h4>
+            <ion-text color="secondary">
+              <p>{{language?.subject_passmark}} ({{subject.passmark}})</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css" >
+          <ion-avatar class="avatar-img">
+            <img src="assets/teacher.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.subject_teacher}}</h4>
+            <ion-text color="secondary">
+              <p>{{teachers[subjectteachers[subject.subjectID][0]]}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

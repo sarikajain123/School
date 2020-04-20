@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true, saleID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div style="overflow-x:scroll;">
+    <ion-row class="invoice-info">
+      <ion-col [size]="8" class="invoice-col" style="font-size: 13px;">
+        {{language?.productsale_from}}
+        <address>
+          <strong>{{siteinfos?.sitename}}</strong><br>
+          {{siteinfos?.address}}<br>
+          {{language?.productsale_phone}} : {{siteinfos?.phone}}<br>
+          {{language?.productsale_email}} : {{siteinfos?.email}}<br>
+        </address>
+      </ion-col>
+      <ion-col [size]="4" style="font-size: 13px;">
+        <b>{{language?.productsale_referenceno}} : {{productsale?.productsalereferenceno}}</b><br>
+        {{language?.productsale_payment_status}} : <span class="text-green" *ngIf="productsale?.productsalestatus==3">{{language?.productsale_fully_paid}}</span><span class="text-green" *ngIf="productsale?.productsalestatus==2">{{language?.productsale_partial_paid}}</span><span class="text-green" *ngIf="productsale?.productsalestatus==1">{{language?.productsale_pending}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="" style="font-size: 13px;">
+        {{language?.productsale_to}}
+        <address>
+          <strong>{{user?.name}}</strong><br>
+          {{language?.productsale_role}} : {{usertypes[user?.usertypeID]}}<br>
+          {{user?.address}}<br>
+          {{language?.productsale_phone}} : {{user?.phone}}<br>
+          {{language?.productsale_email}} : {{user?.email}}<br>
+        </address>
+      </ion-col>
+    </ion-row>
+    <br>
+    <div style="overflow-x:scroll;">
+      <table class="table table-bordered product-style">
+        <thead>
+        <tr>
+          <th class="col-lg-2">#</th>
+          <th class="col-lg-4">{{language?.productsale_description}}</th>
+          <th class="col-lg-2">{{language?.productsale_unit_price}}</th>
+          <th class="col-lg-2">{{language?.productsale_quantity}}</th>
+          <th class="col-lg-2">{{language?.productsale_subtotal}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of productsaleitems let rowIndex = index">
+          <td data-title="#">{{rowIndex+1}}</td>
+          <td data-title="Description">{{products[item.productID]}}</td>
+          <td data-title="unit price">{{item.productsaleunitprice}}</td>
+          <td data-title="Quantity">{{item.productsalequantity}}</td>
+          <td data-title="Subtotal">{{item?.subtotal}} </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="4"><span class="pull-right"><b>{{language?.productsale_total_amount}}</b></span></td>
+          <td><b>{{productsalepaid?.totalamount}}</b></td>
+        </tr>
+        <tr>
+          <td colspan="4"><span class="pull-right"><b>{{language?.productsale_paid}}</b></span></td>
+          <td><b>{{productsalepaid?.productsalepaidamount}}</b></td>
+        </tr>
+        <tr>
+          <td colspan="4"><span class="pull-right"><b>{{language?.productsale_balance}}</b></span></td>
+          <td><b>{{productsalepaid?.balanceamount}}</b></td>
+        </tr>
+        </tfoot>
+      </table>
+
+      <div class="col-sm-3 col-xs-12 pull-right">
+        <div class="well well-sm">
+          <p>
+            {{language?.productsale_create_by}} : {{createuser}} <br>
+            {{language?.productsale_date}} : {{productsale?.productsaledate |date: "dd MMM yyyy" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

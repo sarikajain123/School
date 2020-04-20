@@ -1,0 +1,104 @@
+
+<ion-header>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title align="center">{{language?.panel_title}} {{language?.view}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="bg-image no-scroll">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event,true,salarytemplateID)" *ngIf="isRefresh">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container  *ngIf="salarytemplate">
+    <ion-card class="card-bg">
+      <div class="card-class">
+        <h3 class="text-color-h">{{language?.salary_template_salary_grades}} ({{salarytemplate?.salary_grades}})</h3>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/salary.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.salary_template_basic_salary}}</h4>
+            <ion-text color="secondary">
+              <p>{{salarytemplate?.basic_salary}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/salary.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.salary_template_overtime_rate}}</h4>
+            <ion-text color="secondary">
+              <p>{{salarytemplate?.overtime_rate}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+    <ion-card class="card-bg" *ngFor="let salaryoption of salaryoptions">
+      <div class="card-class">
+        <h3 class="text-color-h" *ngIf="salaryoption.option_type == 1">{{language?.salary_template_allowances}}</h3>
+        <h3 class="text-color-h" *ngIf="salaryoption.option_type == 2">{{language?.salary_template_deductions}}</h3>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/salary.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{salaryoption.label_name}}</h4>
+            <ion-text color="secondary">
+              <p>{{salaryoption.label_amount}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+    <ion-card class="card-bg">
+      <div class="card-class">
+        <h3 class="text-color-h">{{language?.salary_template_total_salary_details}}</h3>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/salary.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.salary_template_gross_salary}}</h4>
+            <ion-text color="secondary">
+              <p>{{grosssalary}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/salary.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.salary_template_total_deduction}}</h4>
+            <ion-text color="secondary">
+              <p>{{totaldeduction}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item class="p-text ion-item-css">
+          <ion-avatar style="margin-right: 10px">
+            <img src="assets/salary.png" />
+          </ion-avatar>
+          <ion-label>
+            <h4>{{language?.salary_template_net_salary}}</h4>
+            <ion-text color="secondary">
+              <p>{{netsalary}}</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>
+
